@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pl">
+<style>
+    .character--healed {
+        border: 2px solid black;
+        background: darkseagreen;
+        width: 100px;
+        height: 100px;
+    }
+
+    .character--wounded {
+        border: 2px solid black;
+        background: darkgray;
+        width: 100px;
+        height: 100px;
+    }
+
+    .character--resting {
+        border: 2px solid black;
+        background: dodgerblue;
+        width: 100px;
+        height: 100px;
+    }
+
+    .character--fighting {
+        border: 2px solid black;
+        background: orangered;
+        width: 100px;
+        height: 100px;
+    }
+</style>
+<div id="main"></div>
+
+<script src="./index.js"></script>
+<script>
+    Elm.Main.init({
+        node: document.getElementById('#main'),
+        flags: {}
+    });
+</script>
+</html>
