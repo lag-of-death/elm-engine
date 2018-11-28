@@ -1,32 +1,67 @@
 <!doctype html>
 <html lang="pl">
 <style>
-    .character--healed {
+    html, body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .viewport {
         border: 2px solid black;
+        position: relative;
+        overflow: hidden;
+        background: darkslategray;
+    }
+
+    .world {
+        background: green;
+        position: relative;
+        width: 800px;
+        height: 800px;
+    }
+
+    .boulder {
+        display: flex;
+        border: 2px solid dodgerblue;
+        background: gray;
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+        font-family: sans-serif;
+    }
+
+    .boulder--collidable {
+        background: darkred;
+    }
+
+    .character {
+        border: 2px solid orange;
+        display: inline-block;
+        position: absolute;
+    }
+
+    .character--going-left {
         background: darkseagreen;
-        width: 100px;
-        height: 100px;
     }
 
-    .character--wounded {
-        border: 2px solid black;
+    .character--going-right {
         background: darkgray;
-        width: 100px;
-        height: 100px;
     }
 
-    .character--resting {
-        border: 2px solid black;
+    .character--going-up {
         background: dodgerblue;
-        width: 100px;
-        height: 100px;
     }
 
-    .character--fighting {
-        border: 2px solid black;
+    .character--going-down {
         background: orangered;
-        width: 100px;
-        height: 100px;
     }
 </style>
 <div id="main"></div>

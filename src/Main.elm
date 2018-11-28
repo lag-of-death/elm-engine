@@ -2,9 +2,10 @@ module Main exposing (main)
 
 import Browser
 import Browser.Events as E
-import Html
-import Html.Attributes as A
 import Json.Decode as Decode
+import Types exposing (..)
+import Update exposing (..)
+import View exposing (..)
 
 
 main : Program {} Model Msg
@@ -34,55 +35,15 @@ subscriptions model =
 
 init : {} -> ( Model, Cmd Msg )
 init flags =
-    ( "character--resting", Cmd.none )
-
-
-
--- UPDATE
-
-
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case msg of
-        KeyDown a ->
-            case a of
-                "ArrowRight" ->
-                    ( "character--wounded", Cmd.none )
-
-                "ArrowUp" ->
-                    ( "character--healed", Cmd.none )
-
-                "ArrowDown" ->
-                    ( "character--fighting", Cmd.none )
-
-                "ArrowLeft" ->
-                    ( "character--resting", Cmd.none )
-
-                _ ->
-                    ( "character--resting", Cmd.none )
-
-
-
--- TYPES
-
-
-type alias Model =
-    String
-
-
-type Msg
-    = KeyDown String
-
-
-
--- VIEW
-
-
-view : Model -> { body : List (Html.Html Msg), title : String }
-view model =
-    { body = [ Html.div [ A.class model ] [] ]
-    , title = ""
-    }
+    ( { items =
+            [ { x = 360, y = 300, h = 40, w = 130, collidable = True }
+            , { x = 360, y = 600, h = 40, w = 130, collidable = True }
+            , { x = 160, y = 400, h = 40, w = 130, collidable = False }
+            ]
+      , player = { v = 8, x = 0, y = 0, h = 60, w = 60, appearance = "character--going-up", r = 300 }
+      }
+    , Cmd.none
+    )
 
 
 
