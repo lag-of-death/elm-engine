@@ -12,7 +12,7 @@ isSthOnTheRight player item =
         else if (player.r - player.y) >= item.y + item.h then
             False
 
-        else if (player.r - player.x) >= item.x + item.w - player.v then
+        else if (player.r - player.x) >= item.x + item.w then
             False
 
         else
@@ -31,7 +31,7 @@ isSthAbove player item =
         else if (player.r - player.x) + player.w <= item.x then
             False
 
-        else if (player.r - player.y) >= item.y + item.h + player.v then
+        else if (player.r - player.y) > item.y + item.h then
             False
 
         else
@@ -50,7 +50,7 @@ isSthBeneath player item =
         else if (player.r - player.x) + player.w <= item.x then
             False
 
-        else if (player.r + player.h - player.y + player.v) <= item.y then
+        else if (player.r + player.h - player.y) < item.y then
             False
 
         else
@@ -69,7 +69,7 @@ isSthOnTheLeft player item =
         else if (player.r - player.y) >= item.y + item.h then
             False
 
-        else if (player.r - player.x + player.w) <= item.x + player.v then
+        else if (player.r - player.x + player.w) <= item.x then
             False
 
         else
