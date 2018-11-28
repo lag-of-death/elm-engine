@@ -18,15 +18,23 @@ view model =
 
         items =
             model.items
+
+        viewportWidth =
+            player.r * 2 + player.w
+
+        viewportHeight =
+            player.r * 2 + player.h
     in
     { body =
         [ Html.div
             [ A.class "viewport"
-            , A.style "width" <| intToPx (player.r * 2 + player.w)
-            , A.style "height" <| intToPx (player.r * 2 + player.h)
+            , A.style "width" <| intToPx viewportWidth
+            , A.style "height" <| intToPx viewportHeight
             ]
             [ Html.div
                 [ A.class "world"
+                , A.style "width" <| intToPx (viewportWidth * 2)
+                , A.style "height" <| intToPx (viewportHeight * 2)
                 , A.style "left" <| intToPx player.x
                 , A.style "top" <| intToPx player.y
                 ]
@@ -42,13 +50,7 @@ view model =
                                 , A.style "width" <| intToPx item.w
                                 , A.style "height" <| intToPx item.h
                                 ]
-                                [ Html.text <|
-                                    if item.collidable then
-                                        "collidable"
-
-                                    else
-                                        "non-collidable"
-                                ]
+                                []
                         )
                         items
                     ]

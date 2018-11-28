@@ -15,23 +15,23 @@
     }
 
     .viewport {
-        border: 2px solid black;
+        transform: scale(6);
+        border: 1px solid black;
         position: relative;
         overflow: hidden;
         background: darkslategray;
     }
 
     .world {
-        background: green;
+        background: seagreen;
         position: relative;
-        width: 800px;
-        height: 800px;
     }
 
     .boulder {
+        box-sizing: border-box;
         display: flex;
-        border: 2px solid dodgerblue;
-        background: gray;
+        border: 1px solid darkblue;
+        background: lightgoldenrodyellow;
         position: absolute;
         align-items: center;
         justify-content: center;
@@ -39,11 +39,12 @@
     }
 
     .boulder--collidable {
-        background: darkred;
+        background: darkorange;
     }
 
     .character {
-        border: 2px solid orange;
+        box-sizing: border-box;
+        border: 1px solid orange;
         display: inline-block;
         position: absolute;
     }
