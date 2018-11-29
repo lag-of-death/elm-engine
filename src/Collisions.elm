@@ -43,21 +43,35 @@ isSthAbove player item =
 
 isSthBeneath : Player -> Item -> Bool
 isSthBeneath player item =
-    if (player.r + player.h - player.y) <= item.y then
-        if (player.r - player.x) >= (item.x + item.w) then
-            False
+    let
+        x1 =
+            player.r - player.x
 
-        else if (player.r - player.x) + player.w <= item.x then
-            False
+        y1 =
+            player.r - player.y
 
-        else if (player.r + player.h - player.y) < item.y then
-            False
+        x2 =
+            item.x
 
-        else
-            item.collidable
+        y2 =
+            item.y
 
-    else
-        False
+        w1 =
+            player.w
+
+        w2 =
+            item.w
+
+        collidingFromRight =
+            (x2 + w2 + w1) > (x1 + w1)
+
+        collidingByY =
+            (y1 + player.h) == y2
+
+        collidingFromLeft =
+            (x1 + w1) > x2
+    in
+    item.collidable && collidingFromLeft && collidingByY && collidingFromRight
 
 
 isSthOnTheLeft : Player -> Item -> Bool
