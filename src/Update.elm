@@ -12,6 +12,9 @@ update msg model =
                 player =
                     model.player
 
+                player_ =
+                    { player | x = player.r - player.x, y = player.r - player.y }
+
                 items =
                     model.items
             in
@@ -21,7 +24,7 @@ update msg model =
                         | player =
                             { player
                                 | x =
-                                    if List.any (\item -> isSthOnTheRight player item) items then
+                                    if List.any (\item -> isSthOnTheRight player_ item) items then
                                         player.x
 
                                     else
@@ -37,7 +40,7 @@ update msg model =
                         | player =
                             { player
                                 | y =
-                                    if List.any (\item -> isSthAbove player item) items then
+                                    if List.any (\item -> isSthAbove player_ item) items then
                                         player.y
 
                                     else
@@ -53,7 +56,7 @@ update msg model =
                         | player =
                             { player
                                 | y =
-                                    if List.any (\item -> isSthBeneath player item) items then
+                                    if List.any (\item -> isSthBeneath player_ item) items then
                                         player.y
 
                                     else
@@ -69,7 +72,7 @@ update msg model =
                         | player =
                             { player
                                 | x =
-                                    if List.any (\item -> isSthOnTheLeft player item) items then
+                                    if List.any (\item -> isSthOnTheLeft player_ item) items then
                                         player.x
 
                                     else
