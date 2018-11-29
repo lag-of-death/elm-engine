@@ -36,13 +36,14 @@ subscriptions model =
 init : {} -> ( Model, Cmd Msg )
 init flags =
     ( { items =
-            [ { x = 36, y = 30, h = 6, w = 13, collidable = True }
-            , { x = 36, y = 60, h = 4, w = 10, collidable = True }
-            , { x = 16, y = 40, h = 5, w = 11, collidable = False }
-            , { x = 60, y = 80, h = 9, w = 11, collidable = False }
-            , { x = 100, y = 40, h = 10, w = 11, collidable = True }
+            [ { x = 36, y = 30, h = 6, w = 13, collidable = True, class = "boulder" }
+            , { x = 36, y = 60, h = 4, w = 10, collidable = True, class = "boulder" }
+            , { x = 16, y = 40, h = 5, w = 11, collidable = False, class = "boulder" }
+            , { x = 60, y = 80, h = 9, w = 11, collidable = False, class = "boulder" }
+            , { x = 100, y = 40, h = 10, w = 11, collidable = True, class = "boulder" }
+            , { x = 70, y = 40, h = 8, w = 8, collidable = True, class = "fire" }
             ]
-      , player = { v = 1, x = 0, y = 0, h = 6, w = 6, appearance = "character--going-up", r = 30 }
+      , player = { v = 1, x = -10, y = -10, h = 16, w = 16, appearance = "character--going-down", r = 30 }
       }
     , Cmd.none
     )

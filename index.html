@@ -19,50 +19,100 @@
         border: 1px solid black;
         position: relative;
         overflow: hidden;
-        background: darkslategray;
+        background: gray;
     }
 
     .world {
-        background: seagreen;
+        background: white;
         position: relative;
     }
 
     .boulder {
+        border: 1px dashed black;
         box-sizing: border-box;
         display: flex;
-        border: 1px solid darkblue;
-        background: lightgoldenrodyellow;
         position: absolute;
         align-items: center;
         justify-content: center;
-        font-family: sans-serif;
     }
 
     .boulder--collidable {
-        background: darkorange;
+        background: gray;
+        border: 1px solid black;
+    }
+
+    @keyframes down {
+        from {
+            background: url('./assets/down_1.png');
+        }
+        to {
+            background: url('./assets/down_2.png');
+        }
+    }
+
+    @keyframes up {
+        from {
+            background: url('./assets/up_1.png');
+        }
+        to {
+            background: url('./assets/up_2.png');
+        }
+    }
+
+    @keyframes left {
+        from {
+            background: url('assets/left_1.png');
+        }
+        to {
+            background: url('./assets/left_2.png');
+        }
+    }
+
+    @keyframes right {
+        from {
+            background: url('./assets/right_1.png');
+        }
+        to {
+            background: url('./assets/right_2.png');
+        }
+    }
+
+    @keyframes fire {
+        0% {
+            background: url('./assets/fire_1.png');
+        }
+        50% {
+            background: url('./assets/fire_2.png');
+        }
+        100% {
+            background: url('./assets/fire_1.png');
+        }
+    }
+
+    .fire {
+        position: absolute;
+        animation: fire 2s steps(3) infinite;
     }
 
     .character {
-        box-sizing: border-box;
-        border: 1px solid orange;
         display: inline-block;
         position: absolute;
     }
 
     .character--going-left {
-        background: darkseagreen;
+        animation: left 600ms steps(2) infinite;
     }
 
     .character--going-right {
-        background: darkgray;
+        animation: right 600ms steps(2) infinite;
     }
 
     .character--going-up {
-        background: dodgerblue;
+        animation: up 600ms steps(2) infinite;
     }
 
     .character--going-down {
-        background: orangered;
+        animation: down 600ms steps(2) infinite;
     }
 </style>
 <div id="main"></div>
