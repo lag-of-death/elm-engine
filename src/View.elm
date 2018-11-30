@@ -44,7 +44,7 @@ view model =
                     , List.map
                         (\item ->
                             Html.div
-                                [ A.classList [ ( "boulder--collidable", item.class == "boulder" && item.collidable ), ( item.class, True ) ]
+                                [ A.class item.class
                                 , A.style "top" <| intToPx item.y
                                 , A.style "left" <| intToPx item.x
                                 , A.style "width" <| intToPx item.w
@@ -59,7 +59,8 @@ view model =
                 , A.style "left" <| intToPx player.r
                 , A.style "width" <| intToPx player.w
                 , A.style "height" <| intToPx player.h
-                , A.classList [ ( player.appearance, True ), ( "character", True ) ]
+                , A.class player.appearance
+                , A.class "character"
                 ]
                 []
             ]
