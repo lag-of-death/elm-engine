@@ -4,7 +4,7 @@ import Time
 
 
 type alias Player =
-    { x : Int, y : Int, h : Int, w : Int, v : Int, appearance : String, r : Int }
+    { x : Int, y : Int, h : Int, w : Int, v : Int, appearance : String, r : Int, isAway : Bool }
 
 
 type alias Item =

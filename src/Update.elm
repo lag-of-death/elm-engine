@@ -69,28 +69,29 @@ update msg model =
         Tick e ->
             let
                 items_ =
-                    List.map
-                        (\item ->
-                            if item.class == "enemy" then
-                                if shouldEnemyMoveRight player_ item && not (List.any (\item_ -> isSthOnTheRight item item_) items) then
-                                    { item | x = item.x + 1 }
+                    Debug.log "ticking" <|
+                        List.map
+                            (\item ->
+                                if item.class == "enemy" then
+                                    if shouldEnemyMoveRight player_ item && not (List.any (\item_ -> isSthOnTheRight item item_) items) then
+                                        { item | x = item.x + 1 }
 
-                                else if shouldEnemyMoveDown player_ item && not (List.any (\item_ -> isSthBeneath item item_) items) then
-                                    { item | y = item.y + 1 }
+                                    else if shouldEnemyMoveDown player_ item && not (List.any (\item_ -> isSthBeneath item item_) items) then
+                                        { item | y = item.y + 1 }
 
-                                else if shouldEnemyMoveUp player_ item && not (List.any (\item_ -> isSthAbove item item_) items) then
-                                    { item | y = item.y - 1 }
+                                    else if shouldEnemyMoveUp player_ item && not (List.any (\item_ -> isSthAbove item item_) items) then
+                                        { item | y = item.y - 1 }
 
-                                else if shouldEnemyMoveLeft player_ item && not (List.any (\item_ -> isSthOnTheLeft item item_) items) then
-                                    { item | x = item.x - 1 }
+                                    else if shouldEnemyMoveLeft player_ item && not (List.any (\item_ -> isSthOnTheLeft item item_) items) then
+                                        { item | x = item.x - 1 }
+
+                                    else
+                                        item
 
                                 else
                                     item
-
-                            else
-                                item
-                        )
-                        items
+                            )
+                            items
             in
             ( { model
                 | items = items_
@@ -99,6 +100,13 @@ update msg model =
             )
 
         KeyDown a ->
+            let
+                enemies =
+                    List.filter (\item -> item.class == "enemy") items
+
+                isPlayerAway_ =
+                    List.any (\enemy -> not (isPlayerAway player_ enemy)) enemies
+            in
             case a of
                 "ArrowRight" ->
                     ( { model
@@ -111,6 +119,7 @@ update msg model =
                                     else
                                         player.x - player.v
                                 , appearance = "character--going-right"
+                                , isAway = isPlayerAway_
                             }
                       }
                     , Cmd.none
@@ -127,6 +136,7 @@ update msg model =
                                     else
                                         player.y + player.v
                                 , appearance = "character--going-up"
+                                , isAway = isPlayerAway_
                             }
                       }
                     , Cmd.none
@@ -143,6 +153,7 @@ update msg model =
                                     else
                                         player.y - player.v
                                 , appearance = "character--going-down"
+                                , isAway = isPlayerAway_
                             }
                       }
                     , Cmd.none
@@ -159,6 +170,7 @@ update msg model =
                                     else
                                         player.x + player.v
                                 , appearance = "character--going-left"
+                                , isAway = isPlayerAway_
                             }
                       }
                     , Cmd.none

@@ -27,7 +27,11 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ E.onKeyDown (Decode.map KeyDown keyDecoder)
-        , Time.every 100 Tick
+        , if model.player.isAway then
+            Time.every 100 Tick
+
+          else
+            Sub.none
         ]
 
 
@@ -47,7 +51,7 @@ init flags =
             , { x = 0, y = 0, h = 8, w = 8, collidable = True, class = "enemy" }
             , { x = 20, y = 40, h = 8, w = 8, collidable = True, class = "enemy" }
             ]
-      , player = { v = 1, x = -10, y = -10, h = 16, w = 16, appearance = "character--going-down", r = 30 }
+      , player = { isAway = True, v = 1, x = -10, y = -10, h = 16, w = 16, appearance = "character--going-down", r = 30 }
       }
     , Cmd.none
     )
