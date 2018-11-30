@@ -1,6 +1,6 @@
 module Types exposing (Item, Model, Msg(..), Player)
 
--- TYPES
+import Time
 
 
 type alias Player =
@@ -19,3 +19,4 @@ type alias Model =
 
 type Msg
     = KeyDown String
+    | Tick Time.Posix

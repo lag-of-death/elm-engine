@@ -4,20 +4,68 @@ import Collisions exposing (..)
 import Types exposing (..)
 
 
+shouldEnemyMoveRight player enemy =
+    player.x > enemy.x
+
+
+shouldEnemyMoveDown player enemy =
+    player.y > enemy.y
+
+
+shouldEnemyMoveLeft player enemy =
+    player.x < enemy.x
+
+
+shouldEnemyMoveUp player enemy =
+    player.y < enemy.y
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
+    let
+        player =
+            model.player
+
+        player_ =
+            { player | x = player.r - player.x, y = player.r - player.y }
+
+        items =
+            model.items
+    in
     case msg of
-        KeyDown a ->
+        Tick e ->
             let
-                player =
-                    model.player
+                items_ =
+                    List.map
+                        (\item ->
+                            if item.class == "enemy" then
+                                if shouldEnemyMoveRight player_ item && not (List.any (\item_ -> isSthOnTheRight item item_) items) then
+                                    { item | x = item.x + 1 }
 
-                player_ =
-                    { player | x = player.r - player.x, y = player.r - player.y }
+                                else if shouldEnemyMoveDown player_ item && not (List.any (\item_ -> isSthBeneath item item_) items) then
+                                    { item | y = item.y + 1 }
 
-                items =
-                    model.items
+                                else if shouldEnemyMoveUp player_ item && not (List.any (\item_ -> isSthAbove item item_) items) then
+                                    { item | y = item.y - 1 }
+
+                                else if shouldEnemyMoveLeft player_ item && not (List.any (\item_ -> isSthOnTheLeft item item_) items) then
+                                    { item | x = item.x - 1 }
+
+                                else
+                                    item
+
+                            else
+                                item
+                        )
+                        items
             in
+            ( { model
+                | items = items_
+              }
+            , Cmd.none
+            )
+
+        KeyDown a ->
             case a of
                 "ArrowRight" ->
                     ( { model
