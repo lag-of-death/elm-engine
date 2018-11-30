@@ -73,16 +73,32 @@ update msg model =
                         List.map
                             (\item ->
                                 if item.class == "enemy" then
-                                    if shouldEnemyMoveRight player_ item && not (List.any (\item_ -> isSthOnTheRight item item_) items) then
+                                    if
+                                        shouldEnemyMoveRight player_ item
+                                            && not (isSthOnTheRight item { x = player_.x, y = player_.y, collidable = True, w = player_.w, h = player_.h, class = "" })
+                                            && not (List.any (\item_ -> isSthOnTheRight item item_) items)
+                                    then
                                         { item | x = item.x + 1 }
 
-                                    else if shouldEnemyMoveDown player_ item && not (List.any (\item_ -> isSthBeneath item item_) items) then
+                                    else if
+                                        shouldEnemyMoveDown player_ item
+                                            && not (isSthBeneath item { x = player_.x, y = player_.y, collidable = True, w = player_.w, h = player_.h, class = "" })
+                                            && not (List.any (\item_ -> isSthBeneath item item_) items)
+                                    then
                                         { item | y = item.y + 1 }
 
-                                    else if shouldEnemyMoveUp player_ item && not (List.any (\item_ -> isSthAbove item item_) items) then
+                                    else if
+                                        shouldEnemyMoveUp player_ item
+                                            && not (isSthAbove item { x = player_.x, y = player_.y, collidable = True, w = player_.w, h = player_.h, class = "" })
+                                            && not (List.any (\item_ -> isSthAbove item item_) items)
+                                    then
                                         { item | y = item.y - 1 }
 
-                                    else if shouldEnemyMoveLeft player_ item && not (List.any (\item_ -> isSthOnTheLeft item item_) items) then
+                                    else if
+                                        shouldEnemyMoveLeft player_ item
+                                            && not (isSthOnTheLeft item { x = player_.x, y = player_.y, collidable = True, w = player_.w, h = player_.h, class = "" })
+                                            && not (List.any (\item_ -> isSthOnTheLeft item item_) items)
+                                    then
                                         { item | x = item.x - 1 }
 
                                     else
