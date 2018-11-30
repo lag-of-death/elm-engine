@@ -4,20 +4,53 @@ import Collisions exposing (..)
 import Types exposing (..)
 
 
+isPlayerAway player enemy =
+    let
+        x1 =
+            player.x - enemy.x
+
+        x2 =
+            enemy.x - player.x
+
+        y1 =
+            player.y - enemy.y
+
+        y2 =
+            enemy.y - player.y
+    in
+    x1 > 30 || x2 > 30 || y1 > 30 || y2 > 30
+
+
 shouldEnemyMoveRight player enemy =
-    player.x > enemy.x
+    let
+        diff =
+            player.x - enemy.x
+    in
+    not (isPlayerAway player enemy) && (player.x > enemy.x)
 
 
 shouldEnemyMoveDown player enemy =
-    player.y > enemy.y
+    let
+        diff =
+            player.y - enemy.y
+    in
+    not (isPlayerAway player enemy) && player.y > enemy.y
 
 
 shouldEnemyMoveLeft player enemy =
-    player.x < enemy.x
+    let
+        diff =
+            enemy.x - player.x
+    in
+    not (isPlayerAway player enemy) && player.x < enemy.x
 
 
 shouldEnemyMoveUp player enemy =
-    player.y < enemy.y
+    let
+        diff =
+            enemy.y - player.y
+    in
+    not (isPlayerAway player enemy) && player.y < enemy.y
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
