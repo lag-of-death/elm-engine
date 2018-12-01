@@ -4,16 +4,17 @@ import Time
 
 
 type alias Player =
-    { x : Int, y : Int, h : Int, w : Int, v : Int, appearance : String, r : Int, isAway : Bool }
+    { id : Int, x : Int, y : Int, h : Int, w : Int, v : Int, appearance : String, r : Int, closeEnemies : List Item }
 
 
 type alias Item =
-    { x : Int, y : Int, h : Int, w : Int, collidable : Bool, class : String }
+    { move : Bool, x : Int, y : Int, h : Int, w : Int, collidable : Bool, class : String, id : Int }
 
 
 type alias Model =
     { player : Player
     , items : List Item
+    , enemies : List Item
     }
 
 

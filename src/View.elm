@@ -1,5 +1,6 @@
 module View exposing (view)
 
+import Helpers exposing (..)
 import Html
 import Html.Attributes as A
 import Types exposing (..)
@@ -39,21 +40,19 @@ view model =
                 , A.style "top" <| intToPx player.y
                 ]
               <|
-                List.concat
-                    [ []
-                    , List.map
-                        (\item ->
-                            Html.div
-                                [ A.class item.class
-                                , A.style "top" <| intToPx item.y
-                                , A.style "left" <| intToPx item.x
-                                , A.style "width" <| intToPx item.w
-                                , A.style "height" <| intToPx item.h
-                                ]
-                                []
-                        )
-                        items
-                    ]
+                List.map
+                    (\item ->
+                        Html.div
+                            [ A.class item.class
+                            , A.style "top" <| intToPx item.y
+                            , A.style "left" <| intToPx item.x
+                            , A.style "width" <| intToPx item.w
+                            , A.style "height" <| intToPx item.h
+                            ]
+                            []
+                    )
+                <|
+                    List.filter (\item -> not <| isPlayerAway { w = player.w, h = player.h, x = player.r - player.x, y = player.r - player.y } item (player.r + player.w)) (List.concat [ model.enemies, items ])
             , Html.div
                 [ A.style "top" <| intToPx player.r
                 , A.style "left" <| intToPx player.r
