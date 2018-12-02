@@ -53,7 +53,7 @@ updateEnemies oldEnemies allItems newEnemies player =
             List.concat [ newEnemies, [ updatedHead ] ]
     in
     if List.isEmpty oldEnemies then
-        { enemies = List.filter (\x -> not <| x.id == -999) newEnemies_ }
+        { enemies = newEnemies_ }
 
     else
         updateEnemies (List.drop 1 oldEnemies) allItems newEnemies_ player
