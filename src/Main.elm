@@ -43,8 +43,13 @@ init : {} -> ( Model, Cmd Msg )
 init flags =
     let
         enemies =
-            [ { move = False, id = 0, x = 0, y = 0, h = 8, w = 8, collidable = True, class = "enemy" }
-            , { move = False, id = 1, x = -10, y = 40, h = 8, w = 8, collidable = True, class = "enemy" }
+            [ { id = 0, x = 0, y = 0, h = 6, w = 8, collidable = True, class = "enemy_1" }
+            , { id = 1, x = -10, y = 40, h = 8, w = 8, collidable = True, class = "enemy_1" }
+            , { id = 1, x = -20, y = 40, h = 6, w = 6, collidable = True, class = "enemy_2" }
+            , { id = 1, x = -30, y = 40, h = 8, w = 8, collidable = True, class = "enemy_1" }
+            , { id = 1, x = -40, y = 40, h = 4, w = 4, collidable = True, class = "enemy_2" }
+            , { id = 1, x = -50, y = 40, h = 8, w = 8, collidable = True, class = "enemy_2" }
+            , { id = 1, x = -60, y = 40, h = 6, w = 4, collidable = True, class = "enemy_1" }
             ]
 
         closeEnemies =
@@ -54,12 +59,12 @@ init flags =
             { closeEnemies = closeEnemies, v = 1, x = -10, y = -10, h = 16, w = 16, appearance = "character--going-down", r = 30, id = 0 }
     in
     ( { items =
-            [ { move = False, id = 0, x = 36, y = 30, h = 6, w = 13, collidable = True, class = "boulder" }
-            , { move = False, id = 1, x = 36, y = 60, h = 4, w = 10, collidable = True, class = "boulder" }
-            , { move = False, id = 2, x = 16, y = 40, h = 5, w = 11, collidable = False, class = "mud" }
-            , { move = False, id = 3, x = 60, y = 80, h = 9, w = 11, collidable = False, class = "mud" }
-            , { move = False, id = 4, x = 100, y = 40, h = 10, w = 11, collidable = True, class = "boulder" }
-            , { move = False, id = 5, x = 70, y = 40, h = 8, w = 8, collidable = True, class = "fire" }
+            [ { id = 0, x = 36, y = 30, h = 6, w = 13, collidable = True, class = "boulder" }
+            , { id = 1, x = 36, y = 60, h = 4, w = 10, collidable = True, class = "boulder" }
+            , { id = 2, x = 16, y = 40, h = 5, w = 11, collidable = False, class = "mud" }
+            , { id = 3, x = 60, y = 80, h = 9, w = 11, collidable = False, class = "mud" }
+            , { id = 4, x = 100, y = 40, h = 10, w = 11, collidable = True, class = "boulder" }
+            , { id = 5, x = 70, y = 40, h = 8, w = 8, collidable = True, class = "fire" }
             ]
       , player = player
       , enemies = enemies

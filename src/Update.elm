@@ -38,29 +38,48 @@ shouldEnemyMoveUp player enemy =
 
 
 playerAsItem { x, y, h, w } =
-    { id = 0, x = x, y = y, w = w, h = h, collidable = True, class = "", move = False }
+    { id = 0, x = x, y = y, w = w, h = h, collidable = True, class = "" }
 
 
-updateEnemies oldEnemies allItems newEnemies player =
+updateEnemies oldEnemies itemsWithPlayer newEnemies player =
     let
-        head =
-            Maybe.withDefault { id = -999, x = -999, y = -999, h = -999, w = -999, collidable = True, class = "", move = False } (List.head oldEnemies)
+        enemy =
+            Maybe.withDefault
+                { id = -1, x = -1, y = -1, h = -1, w = -1, collidable = True, class = "" }
+                (List.head oldEnemies)
 
-        updatedHead =
-            getUpdatedEnemy player head (List.concat [ allItems, oldEnemies, newEnemies ])
+        closeEnemyAsArray =
+            getUpdatedEnemy player enemy (List.concat [ itemsWithPlayer, oldEnemies, newEnemies.enemies_ ])
 
         newEnemies_ =
-            List.concat [ newEnemies, [ updatedHead ] ]
+            { enemies_ =
+                List.concat
+                    [ newEnemies.enemies_
+                    , if List.isEmpty closeEnemyAsArray && not (enemy.id == -1) then
+                        [ enemy ]
+
+                      else
+                        closeEnemyAsArray
+                    ]
+            , closeOnes =
+                List.concat
+                    [ newEnemies.closeOnes
+                    , closeEnemyAsArray
+                    ]
+            }
     in
     if List.isEmpty oldEnemies then
-        { enemies = newEnemies_ }
+        newEnemies_
 
     else
-        updateEnemies (List.drop 1 oldEnemies) allItems newEnemies_ player
+        updateEnemies (List.drop 1 oldEnemies) itemsWithPlayer newEnemies_ player
 
 
 getUpdatedEnemy player_ item itemsWithPlayer =
-    if
+    if item.id == -1 then
+        []
+
+    else if
         shouldEnemyMoveRight player_ item
             && not
                 (List.any
@@ -68,7 +87,7 @@ getUpdatedEnemy player_ item itemsWithPlayer =
                     itemsWithPlayer
                 )
     then
-        { item | x = item.x + 1, move = True }
+        [ { item | x = item.x + 1 } ]
 
     else if
         shouldEnemyMoveDown player_ item
@@ -78,7 +97,7 @@ getUpdatedEnemy player_ item itemsWithPlayer =
                     itemsWithPlayer
                 )
     then
-        { item | y = item.y + 1, move = True }
+        [ { item | y = item.y + 1 } ]
 
     else if
         shouldEnemyMoveUp player_ item
@@ -88,7 +107,7 @@ getUpdatedEnemy player_ item itemsWithPlayer =
                     itemsWithPlayer
                 )
     then
-        { item | y = item.y - 1, move = True }
+        [ { item | y = item.y - 1 } ]
 
     else if
         shouldEnemyMoveLeft player_ item
@@ -98,10 +117,10 @@ getUpdatedEnemy player_ item itemsWithPlayer =
                     itemsWithPlayer
                 )
     then
-        { item | x = item.x - 1, move = True }
+        [ { item | x = item.x - 1 } ]
 
     else
-        { item | move = False }
+        []
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -131,17 +150,14 @@ update msg model =
                 itemsWithPlayer =
                     List.concat [ closeItems_, [ playerItem ] ]
 
-                enemies_ =
-                    .enemies <| updateEnemies model.enemies itemsWithPlayer [] player_
-
-                closeEnemies =
-                    List.filter (\enemy -> not (isPlayerAway player_ enemy 30)) enemies_
+                { enemies_, closeOnes } =
+                    updateEnemies model.enemies itemsWithPlayer { enemies_ = [], closeOnes = [] } player_
             in
             ( { model
                 | enemies = enemies_
                 , player =
                     { player
-                        | closeEnemies = List.filter (\x -> x.move) closeEnemies
+                        | closeEnemies = closeOnes
                     }
               }
             , Cmd.none

@@ -8,7 +8,7 @@ type alias Player =
 
 
 type alias Item =
-    { move : Bool, x : Int, y : Int, h : Int, w : Int, collidable : Bool, class : String, id : Int }
+    { x : Int, y : Int, h : Int, w : Int, collidable : Bool, class : String, id : Int }
 
 
 type alias Model =
