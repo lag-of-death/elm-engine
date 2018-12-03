@@ -2,3 +2,4 @@ elm-stuff
 *.xml
 *.iml
 index.js
+node_modules

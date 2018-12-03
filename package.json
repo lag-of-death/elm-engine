@@ -1,0 +1,25 @@
+{
+  "name": "elm-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "elm-make": "elm make src/Main.elm --output=./public/index.js",
+    "heroku-postbuild": "npm run elm-make",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lag-of-death/elm-engine.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lag-of-death/elm-engine/issues"
+  },
+  "homepage": "https://github.com/lag-of-death/elm-engine#readme",
+  "dependencies": {
+    "elm": "^0.19.0-bugfix2",
+    "express": "^4.16.4"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "elmgine",
+  "scripts": {
+  },
+  "env": {
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1
+    },
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
