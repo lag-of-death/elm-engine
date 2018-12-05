@@ -56,7 +56,7 @@ init flags =
             []
 
         player =
-            { closeEnemies = closeEnemies, v = 1, x = -10, y = -10, h = 16, w = 16, appearance = "character--going-down", r = 30, id = 0 }
+            { closeEnemies = closeEnemies, v = 1, x = -10, y = -10, h = 16, w = 16, appearance = "character--going-down", r = 30 }
     in
     ( { items =
             [ { id = 0, x = 36, y = 30, h = 6, w = 13, collidable = True, class = "boulder" }
