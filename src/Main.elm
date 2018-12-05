@@ -45,11 +45,11 @@ init flags =
         enemies =
             [ { id = 0, x = 0, y = 0, h = 6, w = 8, collidable = True, class = "enemy_1" }
             , { id = 1, x = -10, y = 40, h = 8, w = 8, collidable = True, class = "enemy_1" }
-            , { id = 1, x = -20, y = 40, h = 6, w = 6, collidable = True, class = "enemy_2" }
-            , { id = 1, x = -30, y = 40, h = 8, w = 8, collidable = True, class = "enemy_1" }
-            , { id = 1, x = -40, y = 40, h = 4, w = 4, collidable = True, class = "enemy_2" }
-            , { id = 1, x = -50, y = 40, h = 8, w = 8, collidable = True, class = "enemy_2" }
-            , { id = 1, x = -60, y = 40, h = 6, w = 4, collidable = True, class = "enemy_1" }
+            , { id = 2, x = -20, y = 40, h = 6, w = 6, collidable = True, class = "enemy_2" }
+            , { id = 3, x = -30, y = 40, h = 8, w = 8, collidable = True, class = "enemy_1" }
+            , { id = 4, x = -40, y = 40, h = 4, w = 4, collidable = True, class = "enemy_2" }
+            , { id = 5, x = -50, y = 40, h = 8, w = 8, collidable = True, class = "enemy_2" }
+            , { id = 6, x = -60, y = 40, h = 6, w = 4, collidable = True, class = "enemy_1" }
             ]
 
         closeEnemies =
