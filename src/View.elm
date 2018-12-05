@@ -58,7 +58,7 @@ view model =
                 , A.style "left" <| intToPx player.r
                 , A.style "width" <| intToPx player.w
                 , A.style "height" <| intToPx player.h
-                , A.class player.appearance
+                , A.class player.class
                 , A.class "character"
                 ]
                 []

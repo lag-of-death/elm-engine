@@ -179,7 +179,7 @@ update msg model =
 
                                     else
                                         player.x - player.v
-                                , appearance = "character--going-right"
+                                , class = "character--going-right"
                                 , closeEnemies = closeEnemies
                             }
                       }
@@ -196,7 +196,7 @@ update msg model =
 
                                     else
                                         player.y + player.v
-                                , appearance = "character--going-up"
+                                , class = "character--going-up"
                                 , closeEnemies = closeEnemies
                             }
                       }
@@ -213,7 +213,7 @@ update msg model =
 
                                     else
                                         player.y - player.v
-                                , appearance = "character--going-down"
+                                , class = "character--going-down"
                                 , closeEnemies = closeEnemies
                             }
                       }
@@ -230,7 +230,7 @@ update msg model =
 
                                     else
                                         player.x + player.v
-                                , appearance = "character--going-left"
+                                , class = "character--going-left"
                                 , closeEnemies = closeEnemies
                             }
                       }
