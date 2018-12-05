@@ -4,25 +4,25 @@ import Types exposing (..)
 
 
 collidingFromAbove player item =
-    (player.y + player.h) > item.y
+    (player.entity.y + player.entity.h) > item.entity.y
 
 
 collidingFromBeneath player item =
-    player.y < (item.y + item.h)
+    player.entity.y < (item.entity.y + item.entity.h)
 
 
 collidingFromRight player item =
-    (item.x + item.w + player.w) > (player.x + player.w)
+    (item.entity.x + item.entity.w + player.entity.w) > (player.entity.x + player.entity.w)
 
 
 collidingFromLeft player item =
-    (player.x + player.w) > item.x
+    (player.entity.x + player.entity.w) > item.entity.x
 
 
 isSthOnTheRight player item =
     let
         collidingByX =
-            (player.x + player.w) == item.x
+            (player.entity.x + player.entity.w) == item.entity.x
     in
     item.collidable && collidingFromAbove player item && collidingByX && collidingFromBeneath player item
 
@@ -30,7 +30,7 @@ isSthOnTheRight player item =
 isSthAbove player item =
     let
         collidingByY =
-            player.y == (item.y + item.h)
+            player.entity.y == (item.entity.y + item.entity.h)
     in
     item.collidable && collidingFromLeft player item && collidingByY && collidingFromRight player item
 
@@ -38,7 +38,7 @@ isSthAbove player item =
 isSthBeneath player item =
     let
         collidingByY =
-            (player.y + player.h) == item.y
+            (player.entity.y + player.entity.h) == item.entity.y
     in
     item.collidable && collidingFromLeft player item && collidingByY && collidingFromRight player item
 
@@ -46,6 +46,6 @@ isSthBeneath player item =
 isSthOnTheLeft player item =
     let
         collidingByX =
-            player.x == item.x + item.w
+            player.entity.x == item.entity.x + item.entity.w
     in
     item.collidable && collidingFromAbove player item && collidingByX && collidingFromBeneath player item

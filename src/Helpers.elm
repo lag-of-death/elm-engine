@@ -4,15 +4,15 @@ module Helpers exposing (isPlayerAway)
 isPlayerAway player enemy r =
     let
         x1 =
-            player.x - enemy.x
+            player.entity.x - enemy.entity.x
 
         x2 =
-            enemy.x - player.x
+            enemy.entity.x - player.entity.x
 
         y1 =
-            player.y - enemy.y
+            player.entity.y - enemy.entity.y
 
         y2 =
-            enemy.y - player.y
+            enemy.entity.y - player.entity.y
     in
     x1 > r || x2 > r || y1 > r || y2 > r

@@ -8,44 +8,44 @@ import Types exposing (..)
 shouldEnemyMoveRight player enemy =
     let
         diff =
-            player.x - enemy.x
+            player.entity.x - enemy.entity.x
     in
-    not (isPlayerAway player enemy 30) && (player.x > enemy.x)
+    not (isPlayerAway player enemy 30) && (player.entity.x > enemy.entity.x)
 
 
 shouldEnemyMoveDown player enemy =
     let
         diff =
-            player.y - enemy.y
+            player.entity.y - enemy.entity.y
     in
-    not (isPlayerAway player enemy 30) && player.y > enemy.y
+    not (isPlayerAway player enemy 30) && player.entity.y > enemy.entity.y
 
 
 shouldEnemyMoveLeft player enemy =
     let
         diff =
-            enemy.x - player.x
+            enemy.entity.x - player.entity.x
     in
-    not (isPlayerAway player enemy 30) && player.x < enemy.x
+    not (isPlayerAway player enemy 30) && player.entity.x < enemy.entity.x
 
 
 shouldEnemyMoveUp player enemy =
     let
         diff =
-            enemy.y - player.y
+            enemy.entity.y - player.entity.y
     in
-    not (isPlayerAway player enemy 30) && player.y < enemy.y
+    not (isPlayerAway player enemy 30) && player.entity.y < enemy.entity.y
 
 
-playerAsItem { x, y, h, w } =
-    { id = 0, x = x, y = y, w = w, h = h, collidable = True, class = "" }
+playerAsItem entity =
+    { id = 0, entity = entity, collidable = True }
 
 
 updateEnemies oldEnemies itemsWithPlayer newEnemies player =
     let
         enemy =
             Maybe.withDefault
-                { id = -1, x = -1, y = -1, h = -1, w = -1, collidable = True, class = "" }
+                { id = -1, entity = { x = -1, y = -1, h = -1, w = -1, class = "" }, collidable = True }
                 (List.head oldEnemies)
 
         closeEnemyAsArray =
@@ -76,6 +76,10 @@ updateEnemies oldEnemies itemsWithPlayer newEnemies player =
 
 
 getUpdatedEnemy player_ item itemsWithPlayer =
+    let
+        entity =
+            item.entity
+    in
     if item.id == -1 then
         []
 
@@ -87,7 +91,7 @@ getUpdatedEnemy player_ item itemsWithPlayer =
                     itemsWithPlayer
                 )
     then
-        [ { item | x = item.x + 1 } ]
+        [ { item | entity = { entity | x = entity.x + 1 } } ]
 
     else if
         shouldEnemyMoveDown player_ item
@@ -97,7 +101,7 @@ getUpdatedEnemy player_ item itemsWithPlayer =
                     itemsWithPlayer
                 )
     then
-        [ { item | y = item.y + 1 } ]
+        [ { item | entity = { entity | y = entity.y + 1 } } ]
 
     else if
         shouldEnemyMoveUp player_ item
@@ -107,7 +111,7 @@ getUpdatedEnemy player_ item itemsWithPlayer =
                     itemsWithPlayer
                 )
     then
-        [ { item | y = item.y - 1 } ]
+        [ { item | entity = { entity | y = entity.y - 1 } } ]
 
     else if
         shouldEnemyMoveLeft player_ item
@@ -117,7 +121,7 @@ getUpdatedEnemy player_ item itemsWithPlayer =
                     itemsWithPlayer
                 )
     then
-        [ { item | x = item.x - 1 } ]
+        [ { item | entity = { entity | x = entity.x - 1 } } ]
 
     else
         []
@@ -132,8 +136,14 @@ update msg model =
         player =
             model.player
 
+        entity =
+            player.entity
+
         player_ =
-            { player | x = player.r - player.x, y = player.r - player.y }
+            { player
+                | entity =
+                    { entity | class = entity.class, x = player.r - entity.x, y = player.r - entity.y }
+            }
 
         items =
             model.items
@@ -145,7 +155,7 @@ update msg model =
                     List.filter (\item -> not (isPlayerAway player_ item 50)) items
 
                 playerItem =
-                    playerAsItem player_
+                    playerAsItem player_.entity
 
                 itemsWithPlayer =
                     List.concat [ closeItems_, [ playerItem ] ]
@@ -173,13 +183,16 @@ update msg model =
                     ( { model
                         | player =
                             { player
-                                | x =
-                                    if List.any (\item -> isSthOnTheRight player_ item) everything then
-                                        player.x
+                                | entity =
+                                    { entity
+                                        | x =
+                                            if List.any (\item -> isSthOnTheRight player_ item) everything then
+                                                player.entity.x
 
-                                    else
-                                        player.x - player.v
-                                , class = "character--going-right"
+                                            else
+                                                player.entity.x - player.v
+                                        , class = "character--going-right"
+                                    }
                                 , closeEnemies = closeEnemies
                             }
                       }
@@ -190,13 +203,16 @@ update msg model =
                     ( { model
                         | player =
                             { player
-                                | y =
-                                    if List.any (\item -> isSthAbove player_ item) everything then
-                                        player.y
+                                | entity =
+                                    { entity
+                                        | y =
+                                            if List.any (\item -> isSthAbove player_ item) everything then
+                                                player.entity.y
 
-                                    else
-                                        player.y + player.v
-                                , class = "character--going-up"
+                                            else
+                                                player.entity.y + player.v
+                                        , class = "character--going-up"
+                                    }
                                 , closeEnemies = closeEnemies
                             }
                       }
@@ -207,13 +223,16 @@ update msg model =
                     ( { model
                         | player =
                             { player
-                                | y =
-                                    if List.any (\item -> isSthBeneath player_ item) everything then
-                                        player.y
+                                | entity =
+                                    { entity
+                                        | y =
+                                            if List.any (\item -> isSthBeneath player_ item) everything then
+                                                player.entity.y
 
-                                    else
-                                        player.y - player.v
-                                , class = "character--going-down"
+                                            else
+                                                player.entity.y - player.v
+                                        , class = "character--going-down"
+                                    }
                                 , closeEnemies = closeEnemies
                             }
                       }
@@ -224,13 +243,16 @@ update msg model =
                     ( { model
                         | player =
                             { player
-                                | x =
-                                    if List.any (\item -> isSthOnTheLeft player_ item) everything then
-                                        player.x
+                                | entity =
+                                    { entity
+                                        | x =
+                                            if List.any (\item -> isSthOnTheLeft player_ item) everything then
+                                                player.entity.x
 
-                                    else
-                                        player.x + player.v
-                                , class = "character--going-left"
+                                            else
+                                                player.entity.x + player.v
+                                        , class = "character--going-left"
+                                    }
                                 , closeEnemies = closeEnemies
                             }
                       }

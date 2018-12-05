@@ -3,12 +3,21 @@ module Types exposing (Item, Model, Msg(..), Player)
 import Time
 
 
+type alias Entity =
+    { x : Int
+    , y : Int
+    , h : Int
+    , w : Int
+    , class : String
+    }
+
+
 type alias Player =
-    { x : Int, y : Int, h : Int, w : Int, v : Int, class : String, r : Int, closeEnemies : List Item }
+    { v : Int, r : Int, closeEnemies : List Item, entity : Entity }
 
 
 type alias Item =
-    { x : Int, y : Int, h : Int, w : Int, collidable : Bool, class : String, id : Int }
+    { entity : Entity, collidable : Bool, id : Int }
 
 
 type alias Model =
