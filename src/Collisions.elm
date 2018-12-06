@@ -24,7 +24,7 @@ isSthOnTheRight player item =
         collidingByX =
             (player.entity.x + player.entity.w) == item.entity.x
     in
-    item.collidable && collidingFromAbove player item && collidingByX && collidingFromBeneath player item
+    item.entity.collidable && collidingFromAbove player item && collidingByX && collidingFromBeneath player item
 
 
 isSthAbove player item =
@@ -32,7 +32,7 @@ isSthAbove player item =
         collidingByY =
             player.entity.y == (item.entity.y + item.entity.h)
     in
-    item.collidable && collidingFromLeft player item && collidingByY && collidingFromRight player item
+    item.entity.collidable && collidingFromLeft player item && collidingByY && collidingFromRight player item
 
 
 isSthBeneath player item =
@@ -40,7 +40,7 @@ isSthBeneath player item =
         collidingByY =
             (player.entity.y + player.entity.h) == item.entity.y
     in
-    item.collidable && collidingFromLeft player item && collidingByY && collidingFromRight player item
+    item.entity.collidable && collidingFromLeft player item && collidingByY && collidingFromRight player item
 
 
 isSthOnTheLeft player item =
@@ -48,4 +48,4 @@ isSthOnTheLeft player item =
         collidingByX =
             player.entity.x == item.entity.x + item.entity.w
     in
-    item.collidable && collidingFromAbove player item && collidingByX && collidingFromBeneath player item
+    item.entity.collidable && collidingFromAbove player item && collidingByX && collidingFromBeneath player item

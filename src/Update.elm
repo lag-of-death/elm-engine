@@ -37,15 +37,11 @@ shouldEnemyMoveUp player enemy =
     not (isPlayerAway player enemy 30) && player.entity.y < enemy.entity.y
 
 
-playerAsItem entity =
-    { id = 0, entity = entity, collidable = True }
-
-
 updateEnemies oldEnemies itemsWithPlayer newEnemies player =
     let
         enemy =
             Maybe.withDefault
-                { id = -1, entity = { x = -1, y = -1, h = -1, w = -1, class = "" }, collidable = True }
+                { entity = { id = -1, x = -1, y = -1, h = -1, w = -1, class = "", collidable = True } }
                 (List.head oldEnemies)
 
         closeEnemyAsArray =
@@ -55,7 +51,7 @@ updateEnemies oldEnemies itemsWithPlayer newEnemies player =
             { enemies_ =
                 List.concat
                     [ newEnemies.enemies_
-                    , if List.isEmpty closeEnemyAsArray && not (enemy.id == -1) then
+                    , if List.isEmpty closeEnemyAsArray && not (enemy.entity.id == -1) then
                         [ enemy ]
 
                       else
@@ -80,7 +76,7 @@ getUpdatedEnemy player_ item itemsWithPlayer =
         entity =
             item.entity
     in
-    if item.id == -1 then
+    if item.entity.id == -1 then
         []
 
     else if
@@ -155,7 +151,7 @@ update msg model =
                     List.filter (\item -> not (isPlayerAway player_ item 50)) items
 
                 playerItem =
-                    playerAsItem player_.entity
+                    { entity = player_.entity }
 
                 itemsWithPlayer =
                     List.concat [ closeItems_, [ playerItem ] ]

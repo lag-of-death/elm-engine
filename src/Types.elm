@@ -9,6 +9,8 @@ type alias Entity =
     , h : Int
     , w : Int
     , class : String
+    , collidable : Bool
+    , id : Int
     }
 
 
@@ -17,7 +19,7 @@ type alias Player =
 
 
 type alias Item =
-    { entity : Entity, collidable : Bool, id : Int }
+    { entity : Entity }
 
 
 type alias Model =
