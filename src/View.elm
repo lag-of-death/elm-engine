@@ -55,7 +55,7 @@ view model =
                             []
                     )
                 <|
-                    List.filter (\item -> not <| isPlayerAway { player | entity = { entity | w = player.entity.w, h = player.entity.h, x = player.r - player.entity.x, y = player.r - player.entity.y } } item (player.r + player.entity.w)) (List.concat [ model.enemies, items ])
+                    List.filter (\item -> not <| isPlayerAway { x = player.r - player.entity.x, y = player.r - player.entity.y } item.entity (player.r + player.entity.w)) (concatEntities model.enemies items)
             , Html.div
                 [ A.style "top" <| intToPx player.r
                 , A.style "left" <| intToPx player.r

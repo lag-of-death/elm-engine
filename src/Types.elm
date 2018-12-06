@@ -1,4 +1,4 @@
-module Types exposing (Item, Model, Msg(..), Player)
+module Types exposing (Enemy, Entity, Item, Model, Msg(..), Player)
 
 import Time
 
@@ -15,17 +15,21 @@ type alias Entity =
 
 
 type alias Player =
-    { v : Int, r : Int, closeEnemies : List Item, entity : Entity }
+    { v : Int, r : Int, closeEnemies : List Enemy, entity : Entity }
 
 
 type alias Item =
-    { entity : Entity }
+    { entity : Entity, description : String }
+
+
+type alias Enemy =
+    { entity : Entity, hp : Int }
 
 
 type alias Model =
     { player : Player
     , items : List Item
-    , enemies : List Item
+    , enemies : List Enemy
     }
 
 

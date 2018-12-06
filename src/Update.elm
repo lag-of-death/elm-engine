@@ -5,47 +5,18 @@ import Helpers exposing (..)
 import Types exposing (..)
 
 
-shouldEnemyMoveRight player enemy =
+updateEnemies oldEnemies closeItems newEnemies player =
     let
-        diff =
-            player.entity.x - enemy.entity.x
-    in
-    not (isPlayerAway player enemy 30) && (player.entity.x > enemy.entity.x)
+        itemsWithPlayer =
+            List.append closeItems (toEntities [ player ])
 
-
-shouldEnemyMoveDown player enemy =
-    let
-        diff =
-            player.entity.y - enemy.entity.y
-    in
-    not (isPlayerAway player enemy 30) && player.entity.y > enemy.entity.y
-
-
-shouldEnemyMoveLeft player enemy =
-    let
-        diff =
-            enemy.entity.x - player.entity.x
-    in
-    not (isPlayerAway player enemy 30) && player.entity.x < enemy.entity.x
-
-
-shouldEnemyMoveUp player enemy =
-    let
-        diff =
-            enemy.entity.y - player.entity.y
-    in
-    not (isPlayerAway player enemy 30) && player.entity.y < enemy.entity.y
-
-
-updateEnemies oldEnemies itemsWithPlayer newEnemies player =
-    let
         enemy =
             Maybe.withDefault
-                { entity = { id = -1, x = -1, y = -1, h = -1, w = -1, class = "", collidable = True } }
+                defaultEnemy
                 (List.head oldEnemies)
 
         closeEnemyAsArray =
-            getUpdatedEnemy player enemy (List.concat [ itemsWithPlayer, oldEnemies, newEnemies.enemies_ ])
+            getUpdatedEnemy player enemy (List.concat [ itemsWithPlayer, toEntities oldEnemies, toEntities newEnemies.enemies_ ])
 
         newEnemies_ =
             { enemies_ =
@@ -71,53 +42,56 @@ updateEnemies oldEnemies itemsWithPlayer newEnemies player =
         updateEnemies (List.drop 1 oldEnemies) itemsWithPlayer newEnemies_ player
 
 
-getUpdatedEnemy player_ item itemsWithPlayer =
+getUpdatedEnemy player item itemsWithPlayer =
     let
-        entity =
+        playerEntity =
+            player.entity
+
+        itemEntity =
             item.entity
     in
-    if item.entity.id == -1 then
+    if itemEntity.id == -1 then
         []
 
     else if
-        shouldEnemyMoveRight player_ item
+        shouldEnemyMoveRight playerEntity itemEntity
             && not
                 (List.any
-                    (\item_ -> isSthOnTheRight item item_)
+                    (\{ entity } -> isSthOnTheRight itemEntity entity)
                     itemsWithPlayer
                 )
     then
-        [ { item | entity = { entity | x = entity.x + 1 } } ]
+        [ { item | entity = { itemEntity | x = itemEntity.x + 1 } } ]
 
     else if
-        shouldEnemyMoveDown player_ item
+        shouldEnemyMoveDown playerEntity itemEntity
             && not
                 (List.any
-                    (\item_ -> isSthBeneath item item_)
+                    (\{ entity } -> isSthBeneath itemEntity entity)
                     itemsWithPlayer
                 )
     then
-        [ { item | entity = { entity | y = entity.y + 1 } } ]
+        [ { item | entity = { itemEntity | y = itemEntity.y + 1 } } ]
 
     else if
-        shouldEnemyMoveUp player_ item
+        shouldEnemyMoveUp playerEntity itemEntity
             && not
                 (List.any
-                    (\item_ -> isSthAbove item item_)
+                    (\{ entity } -> isSthAbove itemEntity entity)
                     itemsWithPlayer
                 )
     then
-        [ { item | entity = { entity | y = entity.y - 1 } } ]
+        [ { item | entity = { itemEntity | y = itemEntity.y - 1 } } ]
 
     else if
-        shouldEnemyMoveLeft player_ item
+        shouldEnemyMoveLeft playerEntity itemEntity
             && not
                 (List.any
-                    (\item_ -> isSthOnTheLeft item item_)
+                    (\{ entity } -> isSthOnTheLeft itemEntity entity)
                     itemsWithPlayer
                 )
     then
-        [ { item | entity = { entity | x = entity.x - 1 } } ]
+        [ { item | entity = { itemEntity | x = itemEntity.x - 1 } } ]
 
     else
         []
@@ -127,7 +101,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     let
         everything =
-            List.concat [ model.enemies, model.items ]
+            concatEntities model.enemies model.items
 
         player =
             model.player
@@ -148,16 +122,10 @@ update msg model =
         Tick e ->
             let
                 closeItems_ =
-                    List.filter (\item -> not (isPlayerAway player_ item 50)) items
-
-                playerItem =
-                    { entity = player_.entity }
-
-                itemsWithPlayer =
-                    List.concat [ closeItems_, [ playerItem ] ]
+                    List.filter (\item -> not (isPlayerAway player_.entity item.entity 50)) items
 
                 { enemies_, closeOnes } =
-                    updateEnemies model.enemies itemsWithPlayer { enemies_ = [], closeOnes = [] } player_
+                    updateEnemies model.enemies (toEntities closeItems_) { enemies_ = [], closeOnes = [] } player_
             in
             ( { model
                 | enemies = enemies_
@@ -172,7 +140,7 @@ update msg model =
         KeyDown a ->
             let
                 closeEnemies =
-                    List.filter (\enemy -> not (isPlayerAway player_ enemy 30)) model.enemies
+                    List.filter (\enemy -> not (isPlayerAway player_.entity enemy.entity 30)) model.enemies
             in
             case a of
                 "ArrowRight" ->
@@ -182,7 +150,7 @@ update msg model =
                                 | entity =
                                     { entity
                                         | x =
-                                            if List.any (\item -> isSthOnTheRight player_ item) everything then
+                                            if List.any (\item -> isSthOnTheRight player_.entity item.entity) everything then
                                                 player.entity.x
 
                                             else
@@ -202,7 +170,7 @@ update msg model =
                                 | entity =
                                     { entity
                                         | y =
-                                            if List.any (\item -> isSthAbove player_ item) everything then
+                                            if List.any (\item -> isSthAbove player_.entity item.entity) everything then
                                                 player.entity.y
 
                                             else
@@ -222,7 +190,7 @@ update msg model =
                                 | entity =
                                     { entity
                                         | y =
-                                            if List.any (\item -> isSthBeneath player_ item) everything then
+                                            if List.any (\item -> isSthBeneath player_.entity item.entity) everything then
                                                 player.entity.y
 
                                             else
@@ -242,7 +210,7 @@ update msg model =
                                 | entity =
                                     { entity
                                         | x =
-                                            if List.any (\item -> isSthOnTheLeft player_ item) everything then
+                                            if List.any (\item -> isSthOnTheLeft player_.entity item.entity) everything then
                                                 player.entity.x
 
                                             else
