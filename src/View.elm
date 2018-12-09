@@ -52,10 +52,18 @@ view model =
                             , A.style "width" <| intToPx item.entity.w
                             , A.style "height" <| intToPx item.entity.h
                             ]
-                            []
+                            [ Html.div
+                                [ A.class "bounds"
+                                , A.style "top" <| intToPx item.entity.bounds.y
+                                , A.style "left" <| intToPx item.entity.bounds.x
+                                , A.style "width" <| intToPx item.entity.bounds.w
+                                , A.style "height" <| intToPx item.entity.bounds.h
+                                ]
+                                []
+                            ]
                     )
                 <|
-                    List.filter (\item -> not <| isPlayerAway { x = player.r - player.entity.x, y = player.r - player.entity.y } item.entity (player.r + player.entity.w)) (concatEntities model.enemies items)
+                    List.filter (\item -> not <| isPlayerAway { x = player.r - player.entity.x, y = player.r - player.entity.y } item.entity 160) (concatEntities model.enemies items)
             , Html.div
                 [ A.style "top" <| intToPx player.r
                 , A.style "left" <| intToPx player.r
@@ -64,7 +72,15 @@ view model =
                 , A.class player.entity.class
                 , A.class "character"
                 ]
-                []
+                [ Html.div
+                    [ A.class "bounds"
+                    , A.style "top" <| intToPx player.entity.bounds.y
+                    , A.style "left" <| intToPx player.entity.bounds.x
+                    , A.style "width" <| intToPx player.entity.bounds.w
+                    , A.style "height" <| intToPx player.entity.bounds.h
+                    ]
+                    []
+                ]
             ]
         ]
     , title = ""

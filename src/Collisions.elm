@@ -5,25 +5,25 @@ import Types exposing (..)
 
 
 collidingFromAbove player item =
-    (player.y + player.h) > item.y
+    (player.y + player.bounds.y + player.bounds.h) > item.y + item.bounds.y
 
 
 collidingFromBeneath player item =
-    player.y < (item.y + item.h)
+    player.y + player.bounds.y < (item.y + item.bounds.y + item.bounds.h)
 
 
 collidingFromRight player item =
-    (item.x + item.w + player.w) > (player.x + player.w)
+    (item.x + item.bounds.x + item.bounds.w + player.bounds.w) > (player.x + player.bounds.x + player.bounds.w)
 
 
 collidingFromLeft player item =
-    (player.x + player.w) > item.x
+    (player.bounds.x + player.x + player.bounds.w) > (item.bounds.x + item.x)
 
 
 isSthOnTheRight player item =
     let
         collidingByX =
-            (player.x + player.w) == item.x
+            (player.x + player.bounds.x + player.bounds.w) == (item.x + item.bounds.x)
     in
     item.collidable && collidingFromAbove player item && collidingByX && collidingFromBeneath player item
 
@@ -31,7 +31,7 @@ isSthOnTheRight player item =
 isSthAbove player item =
     let
         collidingByY =
-            player.y == (item.y + item.h)
+            player.y + player.bounds.y == (item.y + item.bounds.y + item.bounds.h)
     in
     item.collidable && collidingFromLeft player item && collidingByY && collidingFromRight player item
 
@@ -39,7 +39,7 @@ isSthAbove player item =
 isSthBeneath player item =
     let
         collidingByY =
-            (player.y + player.h) == item.y
+            (player.y + player.bounds.y + player.bounds.h) == item.y + item.bounds.y
     in
     item.collidable && collidingFromLeft player item && collidingByY && collidingFromRight player item
 
@@ -47,7 +47,7 @@ isSthBeneath player item =
 isSthOnTheLeft player item =
     let
         collidingByX =
-            player.x == item.x + item.w
+            player.x + player.bounds.x == item.x + item.bounds.w + item.bounds.x
     in
     item.collidable && collidingFromAbove player item && collidingByX && collidingFromBeneath player item
 

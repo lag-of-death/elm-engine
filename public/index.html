@@ -15,7 +15,7 @@
     }
 
     .viewport {
-        transform: scale(6);
+        transform: scale(2);
         border: 1px solid black;
         position: relative;
         overflow: hidden;
@@ -31,6 +31,22 @@
         border: 1px dashed gray;
         box-sizing: border-box;
         position: absolute;
+    }
+
+    .tree {
+        z-index: 1;
+        box-sizing: border-box;
+        position: absolute;
+        border: 1px dashed black;
+
+        background-size: cover;
+        background: url('assets/tree.png')
+    }
+
+    .bounds {
+        box-sizing: border-box;
+        position: absolute;
+        border: 1px solid red;
     }
 
     .enemy_1 {
@@ -109,6 +125,7 @@
     }
 
     .character {
+        z-index: 0;
         border: 1px dashed black;
         box-sizing: border-box;
         display: inline-block;

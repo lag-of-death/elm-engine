@@ -31,4 +31,4 @@ toEntities list =
 
 defaultEnemy : Enemy
 defaultEnemy =
-    { hp = 0, entity = { id = -1, x = -1, y = -1, h = -1, w = -1, class = "", collidable = True } }
+    { hp = 0, entity = { id = -1, x = -1, y = -1, h = -1, w = -1, class = "", collidable = True, bounds = { w = -1, h = -1, y = -1, x = -1 } } }

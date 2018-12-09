@@ -3,6 +3,11 @@ module Types exposing (Enemy, Entity, Item, Model, Msg(..), Player)
 import Time
 
 
+
+--TODO: introduce multiple bounds - List Bound, this way a single image could have multiple collidable places
+--For now there's only one collidable tree in the woods (and there are 4 trees, so there should be 4 such places)
+
+
 type alias Entity =
     { x : Int
     , y : Int
@@ -11,7 +16,12 @@ type alias Entity =
     , class : String
     , collidable : Bool
     , id : Int
+    , bounds : Bound
     }
+
+
+type alias Bound =
+    { w : Int, h : Int, x : Int, y : Int }
 
 
 type alias Player =
