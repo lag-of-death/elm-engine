@@ -46,3 +46,5 @@ type alias Model =
 type Msg
     = KeyDown String
     | Tick Time.Posix
+    | Second Time.Posix
+    | NewRandomNumber Int

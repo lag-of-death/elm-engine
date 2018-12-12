@@ -32,6 +32,7 @@ subscriptions model =
 
           else
             Sub.none
+        , Time.every 1000 Second
         ]
 
 

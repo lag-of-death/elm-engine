@@ -2,6 +2,7 @@ module Update exposing (update)
 
 import Collisions exposing (..)
 import Helpers exposing (..)
+import Random exposing (..)
 import Task exposing (..)
 import Time exposing (..)
 import Types exposing (..)
@@ -124,7 +125,38 @@ update msg model =
             model.items
     in
     case msg of
-        Tick e ->
+        NewRandomNumber number ->
+            let
+                chase_ =
+                    case number of
+                        0 ->
+                            { x = 12, y = 15 }
+
+                        1 ->
+                            { x = 2, y = 3 }
+
+                        2 ->
+                            { x = 2, y = 15 }
+
+                        3 ->
+                            { x = 12, y = 3 }
+
+                        _ ->
+                            { x = player.chase.x, y = player.chase.y }
+            in
+            ( { model
+                | player =
+                    { player
+                        | chase = chase_
+                    }
+              }
+            , Task.perform (\_ -> Tick <| Time.millisToPosix 1) <| Task.succeed ()
+            )
+
+        Second _ ->
+            ( model, Random.generate NewRandomNumber (Random.int 0 3) )
+
+        Tick _ ->
             let
                 closeItems_ =
                     List.filter (\item -> not (isPlayerAway player_.entity item.entity 50)) items
