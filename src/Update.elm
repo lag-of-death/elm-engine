@@ -2,6 +2,8 @@ module Update exposing (update)
 
 import Collisions exposing (..)
 import Helpers exposing (..)
+import Task exposing (..)
+import Time exposing (..)
 import Types exposing (..)
 
 
@@ -224,6 +226,46 @@ update msg model =
                             }
                       }
                     , Cmd.none
+                    )
+
+                "a" ->
+                    ( { model
+                        | player =
+                            { player
+                                | chase = { x = player.chase.x - 1, y = player.chase.y }
+                            }
+                      }
+                    , Task.perform (\_ -> Tick <| Time.millisToPosix 1) <| Task.succeed ()
+                    )
+
+                "d" ->
+                    ( { model
+                        | player =
+                            { player
+                                | chase = { x = player.chase.x + 1, y = player.chase.y }
+                            }
+                      }
+                    , Task.perform (\_ -> Tick <| Time.millisToPosix 1) <| Task.succeed ()
+                    )
+
+                "s" ->
+                    ( { model
+                        | player =
+                            { player
+                                | chase = { x = player.chase.x, y = player.chase.y + 1 }
+                            }
+                      }
+                    , Task.perform (\_ -> Tick <| Time.millisToPosix 1) <| Task.succeed ()
+                    )
+
+                "w" ->
+                    ( { model
+                        | player =
+                            { player
+                                | chase = { x = player.chase.x, y = player.chase.y - 1 }
+                            }
+                      }
+                    , Task.perform (\_ -> Tick <| Time.millisToPosix 1) <| Task.succeed ()
                     )
 
                 _ ->
