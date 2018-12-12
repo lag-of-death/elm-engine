@@ -141,6 +141,15 @@ update msg model =
                         3 ->
                             { x = 12, y = 3 }
 
+                        4 ->
+                            { x = 6, y = -3 }
+
+                        5 ->
+                            { x = -4, y = 6 }
+
+                        6 ->
+                            { x = 12, y = 6 }
+
                         _ ->
                             { x = player.chase.x, y = player.chase.y }
             in
@@ -154,7 +163,7 @@ update msg model =
             )
 
         Second _ ->
-            ( model, Random.generate NewRandomNumber (Random.int 0 3) )
+            ( model, Random.generate NewRandomNumber (Random.int 0 6) )
 
         Tick _ ->
             let
