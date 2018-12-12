@@ -80,6 +80,14 @@ view model =
                     , A.style "height" <| intToPx player.entity.bounds.h
                     ]
                     []
+                , Html.div
+                    [ A.style "position" "absolute"
+                    , A.style "left" "-1px"
+                    , A.style "top" "-1px"
+                    , A.style "border-radius" "360px"
+                    , A.style "border" "1px solid green"
+                    ]
+                    []
                 ]
             ]
         ]
