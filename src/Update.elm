@@ -7,16 +7,13 @@ import Types exposing (..)
 
 updateEnemies oldEnemies closeItems newEnemies player =
     let
-        itemsWithPlayer =
-            List.append closeItems (toEntities [ player ])
-
         enemy =
             Maybe.withDefault
                 defaultEnemy
                 (List.head oldEnemies)
 
         closeEnemyAsArray =
-            getUpdatedEnemy player enemy (List.concat [ itemsWithPlayer, toEntities oldEnemies, toEntities newEnemies.enemies_ ])
+            getUpdatedEnemy player enemy closeItems (toEntities oldEnemies) (toEntities newEnemies.enemies_)
 
         newEnemies_ =
             { enemies_ =
@@ -39,11 +36,17 @@ updateEnemies oldEnemies closeItems newEnemies player =
         newEnemies_
 
     else
-        updateEnemies (List.drop 1 oldEnemies) itemsWithPlayer newEnemies_ player
+        updateEnemies (List.drop 1 oldEnemies) closeItems newEnemies_ player
 
 
-getUpdatedEnemy player item itemsWithPlayer =
+getUpdatedEnemy player item closeItems oldEnemies newEnemies =
     let
+        itemsWithPlayer =
+            List.concat [ toEntities [ player ], closeItems, toEntities oldEnemies, toEntities newEnemies ]
+
+        enemies =
+            List.append oldEnemies newEnemies
+
         playerEntity =
             player.entity
 

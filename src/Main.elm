@@ -45,7 +45,7 @@ init flags =
         enemies =
             [ { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 6 }, id = 0, x = 0, y = 0, h = 6, w = 8, class = "enemy_1", collidable = True } }
             , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 1, collidable = True, x = -10, y = 40, h = 8, w = 8, class = "enemy_1" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 1, collidable = True, x = -30, y = 40, h = 8, w = 8, class = "enemy_2" } }
+            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 1, collidable = True, x = -20, y = 40, h = 8, w = 8, class = "enemy_2" } }
             ]
 
         closeEnemies =

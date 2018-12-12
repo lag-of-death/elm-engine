@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "go": "elm-format . --yes && npm run elm-make && npm run start",
     "elm-make": "elm make src/Main.elm --output=./public/index.js",
     "heroku-postbuild": "npm run elm-make",
     "start": "node server.js"
