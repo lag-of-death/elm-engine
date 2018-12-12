@@ -52,33 +52,17 @@ isSthOnTheLeft player item =
     item.collidable && collidingFromAbove player item && collidingByX && collidingFromBeneath player item
 
 
-shouldEnemyMoveRight player enemy =
-    let
-        diff =
-            player.x - enemy.x
-    in
-    not (isPlayerAway player enemy 30) && (player.x > enemy.x)
+shouldEnemyMoveRight chase player enemy =
+    not (isPlayerAway player enemy 30) && (player.x + chase.x > enemy.x)
 
 
-shouldEnemyMoveDown player enemy =
-    let
-        diff =
-            player.y - enemy.y
-    in
-    not (isPlayerAway player enemy 30) && player.y > enemy.y
+shouldEnemyMoveDown chase player enemy =
+    not (isPlayerAway player enemy 30) && (player.y + chase.y) > enemy.y
 
 
-shouldEnemyMoveLeft player enemy =
-    let
-        diff =
-            enemy.x - player.x
-    in
-    not (isPlayerAway player enemy 30) && player.x < enemy.x
+shouldEnemyMoveLeft chase player enemy =
+    not (isPlayerAway player enemy 30) && (player.x + chase.x) < enemy.x
 
 
-shouldEnemyMoveUp player enemy =
-    let
-        diff =
-            enemy.y - player.y
-    in
-    not (isPlayerAway player enemy 30) && player.y < enemy.y
+shouldEnemyMoveUp chase player enemy =
+    not (isPlayerAway player enemy 30) && (player.y + chase.y) < enemy.y

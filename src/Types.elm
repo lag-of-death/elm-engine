@@ -25,7 +25,7 @@ type alias Bound =
 
 
 type alias Player =
-    { v : Int, r : Int, closeEnemies : List Enemy, entity : Entity }
+    { v : Int, r : Int, closeEnemies : List Enemy, entity : Entity, chase : { x : Int, y : Int } }
 
 
 type alias Item =

@@ -57,7 +57,7 @@ getUpdatedEnemy player item closeItems oldEnemies newEnemies =
         []
 
     else if
-        shouldEnemyMoveRight playerEntity itemEntity
+        shouldEnemyMoveRight player.chase playerEntity itemEntity
             && not
                 (List.any
                     (\{ entity } -> isSthOnTheRight itemEntity entity)
@@ -67,7 +67,7 @@ getUpdatedEnemy player item closeItems oldEnemies newEnemies =
         [ { item | entity = { itemEntity | x = itemEntity.x + 1 } } ]
 
     else if
-        shouldEnemyMoveDown playerEntity itemEntity
+        shouldEnemyMoveDown player.chase playerEntity itemEntity
             && not
                 (List.any
                     (\{ entity } -> isSthBeneath itemEntity entity)
@@ -77,7 +77,7 @@ getUpdatedEnemy player item closeItems oldEnemies newEnemies =
         [ { item | entity = { itemEntity | y = itemEntity.y + 1 } } ]
 
     else if
-        shouldEnemyMoveUp playerEntity itemEntity
+        shouldEnemyMoveUp player.chase playerEntity itemEntity
             && not
                 (List.any
                     (\{ entity } -> isSthAbove itemEntity entity)
@@ -87,7 +87,7 @@ getUpdatedEnemy player item closeItems oldEnemies newEnemies =
         [ { item | entity = { itemEntity | y = itemEntity.y - 1 } } ]
 
     else if
-        shouldEnemyMoveLeft playerEntity itemEntity
+        shouldEnemyMoveLeft player.chase playerEntity itemEntity
             && not
                 (List.any
                     (\{ entity } -> isSthOnTheLeft itemEntity entity)
