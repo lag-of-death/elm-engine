@@ -3,6 +3,7 @@ module View exposing (view)
 import Helpers exposing (..)
 import Html
 import Html.Attributes as A
+import Html.Events as E
 import Types exposing (..)
 
 
@@ -85,10 +86,21 @@ view model =
                     , A.style "left" <| intToPx player.chase.x
                     , A.style "top" <| intToPx player.chase.y
                     , A.style "border-radius" "360px"
-                    , A.style "border" "1px solid green"
+                    , A.style "border" "1px solid forestgreen"
                     ]
                     []
                 ]
+            ]
+        , Html.div
+            [ A.style "transform" "scale(2)"
+            , A.style "display" "flex"
+            , A.style "justify-content" "space-around"
+            , A.style "width" "36%"
+            ]
+            [ Html.button [ E.onClick (KeyDown "ArrowLeft") ] [ Html.text "<" ]
+            , Html.button [ E.onClick (KeyDown "ArrowRight") ] [ Html.text ">" ]
+            , Html.button [ E.onClick (KeyDown "ArrowUp") ] [ Html.text "^" ]
+            , Html.button [ E.onClick (KeyDown "ArrowDown") ] [ Html.text "v" ]
             ]
         ]
     , title = ""
