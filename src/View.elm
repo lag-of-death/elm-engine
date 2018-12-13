@@ -4,6 +4,7 @@ import Helpers exposing (..)
 import Html
 import Html.Attributes as A
 import Html.Events as E
+import Json.Decode exposing (..)
 import Types exposing (..)
 
 
@@ -92,15 +93,32 @@ view model =
                 ]
             ]
         , Html.div
-            [ A.style "transform" "scale(2)"
-            , A.style "display" "flex"
-            , A.style "justify-content" "space-around"
-            , A.style "width" "36%"
+            [ A.class "mobile-keyboard"
             ]
-            [ Html.button [ E.onClick (KeyDown "ArrowLeft") ] [ Html.text "<" ]
-            , Html.button [ E.onClick (KeyDown "ArrowRight") ] [ Html.text ">" ]
-            , Html.button [ E.onClick (KeyDown "ArrowUp") ] [ Html.text "^" ]
-            , Html.button [ E.onClick (KeyDown "ArrowDown") ] [ Html.text "v" ]
+            [ Html.button
+                [ E.on "touchstart" <| succeed (SetDirection "ArrowLeft")
+                , E.on "touchend" <| succeed (SetDirection "none")
+                , A.class "button"
+                ]
+                [ Html.span [] [ Html.text "<" ] ]
+            , Html.button
+                [ E.on "touchstart" <| succeed (SetDirection "ArrowRight")
+                , E.on "touchend" <| succeed (SetDirection "none")
+                , A.class "button"
+                ]
+                [ Html.span [] [ Html.text ">" ] ]
+            , Html.button
+                [ E.on "touchstart" <| succeed (SetDirection "ArrowUp")
+                , E.on "touchend" <| succeed (SetDirection "none")
+                , A.class "button"
+                ]
+                [ Html.span [] [ Html.text "^" ] ]
+            , Html.button
+                [ E.on "touchstart" <| succeed (SetDirection "ArrowDown")
+                , E.on "touchend" <| succeed (SetDirection "none")
+                , A.class "button"
+                ]
+                [ Html.span [] [ Html.text "v" ] ]
             ]
         ]
     , title = ""

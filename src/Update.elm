@@ -183,6 +183,12 @@ update msg model =
             , Cmd.none
             )
 
+        Walk dir ->
+            ( model, Task.perform (\_ -> KeyDown dir) <| Task.succeed () )
+
+        SetDirection dir ->
+            ( { model | player = { player | direction = dir } }, Cmd.none )
+
         KeyDown a ->
             let
                 closeEnemies =
