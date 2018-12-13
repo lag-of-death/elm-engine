@@ -1,153 +1,158 @@
 <!doctype html>
 <html lang="pl">
-<style>
-    html, body {
-        width: 100%;
-        height: 100%;
-        padding: 0;
-        margin: 0;
-    }
-
-    body {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .viewport {
-        transform: scale(2);
-        border: 1px solid black;
-        position: relative;
-        overflow: hidden;
-        background: gray;
-    }
-
-    .world {
-        background: white;
-        position: relative;
-    }
-
-    .mud {
-        border: 1px dashed gray;
-        box-sizing: border-box;
-        position: absolute;
-    }
-
-    .tree {
-        z-index: 1;
-        box-sizing: border-box;
-        position: absolute;
-        border: 1px dashed black;
-
-        background-size: cover;
-        background: url('assets/tree.png')
-    }
-
-    .bounds {
-        box-sizing: border-box;
-        position: absolute;
-        border: 1px solid red;
-    }
-
-    .enemy_1 {
-        border: 1px dotted black;
-        background: gray;
-        position: absolute;
-        box-sizing: border-box;
-    }
-
-    .enemy_2 {
-        border-radius: 360px;
-        border: 1px dotted black;
-        background: gray;
-        position: absolute;
-        box-sizing: border-box;
-    }
-
-    .boulder {
-        box-sizing: border-box;
-        position: absolute;
-        background: gray;
-        border: 1px solid black;
-    }
-
-    @keyframes down {
-        from {
-            background: url('assets/down_1.png');
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <title>ELMgine</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
         }
-        to {
-            background: url('assets/down_2.png');
-        }
-    }
 
-    @keyframes up {
-        from {
-            background: url('assets/up_1.png');
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        to {
-            background: url('assets/up_2.png');
+
+        .viewport {
+            transform: scale(2);
+            border: 1px solid black;
+            position: relative;
+            overflow: hidden;
+            background: gray;
         }
-    }
 
-    @keyframes left {
-        from {
-            background: url('assets/left_1.png');
+        .world {
+            background: white;
+            position: relative;
         }
-        to {
-            background: url('assets/left_2.png');
+
+        .mud {
+            border: 1px dashed gray;
+            box-sizing: border-box;
+            position: absolute;
         }
-    }
 
-    @keyframes right {
-        from {
-            background: url('assets/right_1.png');
+        .tree {
+            z-index: 1;
+            box-sizing: border-box;
+            position: absolute;
+            border: 1px dashed black;
+
+            background-size: cover;
+            background: url('assets/tree.png')
         }
-        to {
-            background: url('assets/right_2.png');
+
+        .bounds {
+            box-sizing: border-box;
+            position: absolute;
+            border: 1px solid red;
         }
-    }
 
-    @keyframes fire {
-        0% {
-            background: url('assets/fire_1.png');
+        .enemy_1 {
+            border: 1px dotted black;
+            background: gray;
+            position: absolute;
+            box-sizing: border-box;
         }
-        50% {
-            background: url('assets/fire_2.png');
+
+        .enemy_2 {
+            border-radius: 360px;
+            border: 1px dotted black;
+            background: gray;
+            position: absolute;
+            box-sizing: border-box;
         }
-        100% {
-            background: url('assets/fire_1.png');
+
+        .boulder {
+            box-sizing: border-box;
+            position: absolute;
+            background: gray;
+            border: 1px solid black;
         }
-    }
 
-    .fire {
-        position: absolute;
-        animation: fire 2s steps(3) infinite;
-    }
+        @keyframes down {
+            from {
+                background: url('assets/down_1.png');
+            }
+            to {
+                background: url('assets/down_2.png');
+            }
+        }
 
-    .character {
-        z-index: 0;
-        border: 1px dashed black;
-        box-sizing: border-box;
-        display: inline-block;
-        position: absolute;
-    }
+        @keyframes up {
+            from {
+                background: url('assets/up_1.png');
+            }
+            to {
+                background: url('assets/up_2.png');
+            }
+        }
 
-    .character--going-left {
-        animation: left 600ms steps(2) infinite;
-    }
+        @keyframes left {
+            from {
+                background: url('assets/left_1.png');
+            }
+            to {
+                background: url('assets/left_2.png');
+            }
+        }
 
-    .character--going-right {
-        animation: right 600ms steps(2) infinite;
-    }
+        @keyframes right {
+            from {
+                background: url('assets/right_1.png');
+            }
+            to {
+                background: url('assets/right_2.png');
+            }
+        }
 
-    .character--going-up {
-        animation: up 600ms steps(2) infinite;
-    }
+        @keyframes fire {
+            0% {
+                background: url('assets/fire_1.png');
+            }
+            50% {
+                background: url('assets/fire_2.png');
+            }
+            100% {
+                background: url('assets/fire_1.png');
+            }
+        }
 
-    .character--going-down {
-        animation: down 600ms steps(2) infinite;
-    }
-</style>
+        .fire {
+            position: absolute;
+            animation: fire 2s steps(3) infinite;
+        }
+
+        .character {
+            z-index: 0;
+            border: 1px dashed black;
+            box-sizing: border-box;
+            display: inline-block;
+            position: absolute;
+        }
+
+        .character--going-left {
+            animation: left 600ms steps(2) infinite;
+        }
+
+        .character--going-right {
+            animation: right 600ms steps(2) infinite;
+        }
+
+        .character--going-up {
+            animation: up 600ms steps(2) infinite;
+        }
+
+        .character--going-down {
+            animation: down 600ms steps(2) infinite;
+        }
+    </style>
+</head>
+<body>
 <div id="main"></div>
 
 <script src="index.js"></script>
@@ -157,4 +162,5 @@
         flags: {}
     });
 </script>
+</body>
 </html>
