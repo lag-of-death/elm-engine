@@ -26,14 +26,14 @@ main =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ E.onKeyDown (Decode.map KeyDown keyDecoder)
+        [ E.onKeyDown (Decode.map SetDirection keyDecoder)
         , if not (List.isEmpty model.player.closeEnemies) then
             Time.every 100 Tick
 
           else
             Sub.none
         , Time.every 1000 Second
-        , if not (model.player.direction == "none") then
+        , if String.contains "Arrow" model.player.direction then
             Time.every 50 (\_ -> Walk model.player.direction)
 
           else
@@ -65,7 +65,22 @@ init flags =
             []
 
         player =
-            { direction = "none", chase = { x = 0, y = 0 }, closeEnemies = closeEnemies, v = 1, entity = { bounds = { w = 8, h = 10, x = 4, y = 5 }, x = 10, y = 30, h = 16, w = 16, class = "character--going-down", collidable = True, id = 123 }, r = 50 }
+            { direction = "none"
+            , chase = { x = 0, y = 0 }
+            , closeEnemies = closeEnemies
+            , v = 1
+            , entity =
+                { bounds = { w = 8, h = 10, x = 4, y = 5 }
+                , x = 40
+                , y = 30
+                , h = 16
+                , w = 16
+                , class = "character--going-down character--stopped"
+                , collidable = True
+                , id = 123
+                }
+            , r = 50
+            }
     in
     ( { items =
             [ { description = "", entity = { bounds = { x = 0, y = 0, w = 10, h = 4 }, id = 1, x = 36, y = 60, h = 4, w = 10, class = "boulder", collidable = True } }
