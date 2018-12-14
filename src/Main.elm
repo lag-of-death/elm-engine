@@ -51,14 +51,14 @@ init flags =
         enemies =
             [ { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 6 }, id = 0, x = 0, y = 0, h = 6, w = 8, class = "enemy_1", collidable = True } }
             , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 1, collidable = True, x = -10, y = 40, h = 8, w = 8, class = "enemy_1" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 1, collidable = True, x = -20, y = 40, h = 8, w = 8, class = "enemy_2" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 1, collidable = True, x = -30, y = 40, h = 8, w = 8, class = "enemy_2" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 1, collidable = True, x = -40, y = 40, h = 8, w = 8, class = "enemy_2" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 1, collidable = True, x = -50, y = 40, h = 8, w = 8, class = "enemy_2" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 1, collidable = True, x = -60, y = 40, h = 8, w = 8, class = "enemy_2" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 1, collidable = True, x = -70, y = 40, h = 8, w = 8, class = "enemy_2" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 1, collidable = True, x = -80, y = 40, h = 8, w = 8, class = "enemy_2" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 1, collidable = True, x = -90, y = 40, h = 8, w = 8, class = "enemy_2" } }
+            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 2, collidable = True, x = -20, y = 40, h = 8, w = 8, class = "enemy_2" } }
+            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 3, collidable = True, x = -30, y = 40, h = 8, w = 8, class = "enemy_2" } }
+            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 4, collidable = True, x = -40, y = 40, h = 8, w = 8, class = "enemy_2" } }
+            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 5, collidable = True, x = -50, y = 40, h = 8, w = 8, class = "enemy_2" } }
+            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 6, collidable = True, x = -60, y = 40, h = 8, w = 8, class = "enemy_2" } }
+            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 7, collidable = True, x = -70, y = 40, h = 8, w = 8, class = "enemy_2" } }
+            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 8, collidable = True, x = -80, y = 40, h = 8, w = 8, class = "enemy_2" } }
+            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 9, collidable = True, x = -90, y = 40, h = 8, w = 8, class = "enemy_2" } }
             ]
 
         closeEnemies =
