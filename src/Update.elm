@@ -8,7 +8,7 @@ import Time exposing (..)
 import Types exposing (..)
 
 
-onTick model items player =
+onTick enemies items player =
     let
         player_ =
             toPlayer_ player
@@ -17,110 +17,93 @@ onTick model items player =
             List.filter (\item -> not (isPlayerAway player_.entity item.entity 50)) items
 
         { enemies_, closeOnes } =
-            updateEnemies model.enemies (toEntities closeItems_) { enemies_ = [], closeOnes = [] } player_
+            updateEnemies enemies (toEntities closeItems_) { enemies_ = [], closeOnes = [] } player_
     in
-    ( { model
-        | enemies = enemies_
-        , player =
-            { player
-                | closeEnemies = closeOnes
-            }
-      }
-    , Cmd.none
-    )
+    { e = enemies_
+    , p =
+        { player
+            | closeEnemies = closeOnes
+        }
+    }
 
 
-onKeyDown model player entity itemsAndEnemies keyCode =
+onKeyDown enemies items player keyCode =
     let
-        player_ =
+        itemsAndEnemies =
+            concatEntities enemies items
+
+        playerEntity =
+            player.entity
+
+        { entity } =
             toPlayer_ player
 
         closeEnemies =
-            List.filter (\enemy -> not (isPlayerAway player_.entity enemy.entity 30)) model.enemies
+            List.filter (\enemy -> not (isPlayerAway entity enemy.entity 30)) enemies
     in
     case keyCode of
         "ArrowRight" ->
-            ( { model
-                | player =
-                    { player
-                        | entity =
-                            { entity
-                                | x =
-                                    if List.any (\item -> isSthOnTheRight player_.entity item.entity) itemsAndEnemies then
-                                        player.entity.x
+            { player
+                | entity =
+                    { playerEntity
+                        | x =
+                            if List.any (\item -> isSthOnTheRight entity item.entity) itemsAndEnemies then
+                                player.entity.x
 
-                                    else
-                                        player.entity.x - player.v
-                                , class = "character--going-right"
-                            }
-                        , closeEnemies = closeEnemies
+                            else
+                                player.entity.x - player.v
+                        , class = "character--going-right"
                     }
-              }
-            , Cmd.none
-            )
+                , closeEnemies = closeEnemies
+            }
 
         "ArrowUp" ->
-            ( { model
-                | player =
-                    { player
-                        | entity =
-                            { entity
-                                | y =
-                                    if List.any (\item -> isSthAbove player_.entity item.entity) itemsAndEnemies then
-                                        player.entity.y
+            { player
+                | entity =
+                    { playerEntity
+                        | y =
+                            if List.any (\item -> isSthAbove entity item.entity) itemsAndEnemies then
+                                player.entity.y
 
-                                    else
-                                        player.entity.y + player.v
-                                , class = "character--going-up"
-                            }
-                        , closeEnemies = closeEnemies
+                            else
+                                player.entity.y + player.v
+                        , class = "character--going-up"
                     }
-              }
-            , Cmd.none
-            )
+                , closeEnemies = closeEnemies
+            }
 
         "ArrowDown" ->
-            ( { model
-                | player =
-                    { player
-                        | entity =
-                            { entity
-                                | y =
-                                    if List.any (\item -> isSthBeneath player_.entity item.entity) itemsAndEnemies then
-                                        player.entity.y
+            { player
+                | entity =
+                    { playerEntity
+                        | y =
+                            if List.any (\item -> isSthBeneath entity item.entity) itemsAndEnemies then
+                                player.entity.y
 
-                                    else
-                                        player.entity.y - player.v
-                                , class = "character--going-down"
-                            }
-                        , closeEnemies = closeEnemies
+                            else
+                                player.entity.y - player.v
+                        , class = "character--going-down"
                     }
-              }
-            , Cmd.none
-            )
+                , closeEnemies = closeEnemies
+            }
 
         "ArrowLeft" ->
-            ( { model
-                | player =
-                    { player
-                        | entity =
-                            { entity
-                                | x =
-                                    if List.any (\item -> isSthOnTheLeft player_.entity item.entity) itemsAndEnemies then
-                                        player.entity.x
+            { player
+                | entity =
+                    { playerEntity
+                        | x =
+                            if List.any (\item -> isSthOnTheLeft entity item.entity) itemsAndEnemies then
+                                player.entity.x
 
-                                    else
-                                        player.entity.x + player.v
-                                , class = "character--going-left"
-                            }
-                        , closeEnemies = closeEnemies
+                            else
+                                player.entity.x + player.v
+                        , class = "character--going-left"
                     }
-              }
-            , Cmd.none
-            )
+                , closeEnemies = closeEnemies
+            }
 
         _ ->
-            ( model, Cmd.none )
+            player
 
 
 updateEnemies oldEnemies closeItems newEnemies player =
@@ -159,7 +142,7 @@ updateEnemies oldEnemies closeItems newEnemies player =
 
 getUpdatedEnemy player item closeItems oldEnemies newEnemies =
     let
-        itemsWithPlayer =
+        itemsEnemiesAndPlayer =
             List.concat [ toEntities [ player ], closeItems, toEntities oldEnemies, toEntities newEnemies ]
 
         enemies =
@@ -179,7 +162,7 @@ getUpdatedEnemy player item closeItems oldEnemies newEnemies =
             && not
                 (List.any
                     (\{ entity } -> isSthOnTheRight itemEntity entity)
-                    itemsWithPlayer
+                    itemsEnemiesAndPlayer
                 )
     then
         [ { item | entity = { itemEntity | x = itemEntity.x + 1 } } ]
@@ -189,7 +172,7 @@ getUpdatedEnemy player item closeItems oldEnemies newEnemies =
             && not
                 (List.any
                     (\{ entity } -> isSthBeneath itemEntity entity)
-                    itemsWithPlayer
+                    itemsEnemiesAndPlayer
                 )
     then
         [ { item | entity = { itemEntity | y = itemEntity.y + 1 } } ]
@@ -199,7 +182,7 @@ getUpdatedEnemy player item closeItems oldEnemies newEnemies =
             && not
                 (List.any
                     (\{ entity } -> isSthAbove itemEntity entity)
-                    itemsWithPlayer
+                    itemsEnemiesAndPlayer
                 )
     then
         [ { item | entity = { itemEntity | y = itemEntity.y - 1 } } ]
@@ -209,7 +192,7 @@ getUpdatedEnemy player item closeItems oldEnemies newEnemies =
             && not
                 (List.any
                     (\{ entity } -> isSthOnTheLeft itemEntity entity)
-                    itemsWithPlayer
+                    itemsEnemiesAndPlayer
                 )
     then
         [ { item | entity = { itemEntity | x = itemEntity.x - 1 } } ]
@@ -232,17 +215,8 @@ toPlayer_ player =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     let
-        itemsAndEnemies =
-            concatEntities model.enemies model.items
-
-        player =
-            model.player
-
-        entity =
-            player.entity
-
-        items =
-            model.items
+        { player, items, enemies } =
+            model
     in
     case msg of
         NewRandomNumber number ->
@@ -272,28 +246,55 @@ update msg model =
 
                         _ ->
                             { x = player.chase.x, y = player.chase.y }
+
+                { e, p } =
+                    onTick enemies items { player | chase = chase_ }
             in
-            onTick model items { player | chase = chase_ }
+            ( { model | enemies = e, player = p }, Cmd.none )
 
         Second _ ->
             ( model, Random.generate NewRandomNumber (Random.int 0 6) )
 
         Tick _ ->
-            onTick model items player
+            let
+                { e, p } =
+                    onTick enemies items player
+            in
+            ( { model | enemies = e, player = p }, Cmd.none )
 
-        Walk dir ->
-            onKeyDown model player entity itemsAndEnemies dir
+        Walk keyCode ->
+            ( { model | player = onKeyDown enemies items player keyCode }, Cmd.none )
 
         SetDirection dir ->
             let
+                entity =
+                    player.entity
+
                 class_ =
                     if not (String.contains "Arrow" dir) then
-                        player.entity.class ++ " " ++ "character--stopped"
+                        entity.class ++ " " ++ "character--stopped"
 
                     else
-                        player.entity.class
+                        entity.class
             in
-            ( { model | player = { player | direction = dir, entity = { entity | class = class_ } } }, Cmd.none )
+            ( { model
+                | player =
+                    { player
+                        | direction = dir
+                        , entity = { entity | class = class_ }
+                    }
+              }
+            , Cmd.none
+            )
 
         KeyDown keyCode ->
-            onKeyDown model player entity itemsAndEnemies keyCode
+            ( { model
+                | player =
+                    onKeyDown
+                        enemies
+                        items
+                        player
+                        keyCode
+              }
+            , Cmd.none
+            )
