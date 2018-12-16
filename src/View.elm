@@ -83,11 +83,9 @@ view model =
                     ]
                     []
                 , Html.div
-                    [ A.style "position" "absolute"
+                    [ A.class "dot--to-be-chased"
                     , A.style "left" <| intToPx player.chase.x
                     , A.style "top" <| intToPx player.chase.y
-                    , A.style "border-radius" "360px"
-                    , A.style "border" "1px solid forestgreen"
                     ]
                     []
                 ]

@@ -180,3 +180,9 @@ body {
     /* this should be some animation, not just a static image */
     animation-play-state: paused;
 }
+
+.dot--to-be-chased {
+    position: absolute;
+    border-radius: 360px;
+    border: 1px solid forestgreen;
+}
