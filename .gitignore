@@ -4,3 +4,14 @@ elm-stuff
 index.js
 node_modules
 public/assets/tmp
+
+/bower_components/
+/node_modules/
+/.pulp-cache/
+/output/
+/generated-docs/
+/.psc-package/
+/.psc*
+/.purs*
+/.psa*
+app.js
