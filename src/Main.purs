@@ -1,8 +1,9 @@
 module Main where
 
-import Prelude
+import Prelude ((<>), ($), (<$>), Unit, bind, show)
 
 import Effect (Effect)
+import Effect.Console
 import Node.HTTP (createServer, listen)
 import StaticServe (staticHandler)
 import Node.Process (lookupEnv)
@@ -21,4 +22,4 @@ main = do
   port <- (\portEnvAsMaybe -> parseInt $ fromMaybe "5000" portEnvAsMaybe ) <$> portEnvAsMaybeInEffect
   server <- createServer $ staticHandler { root: "./public", maxAge: 60, historyAPIFallback: true }
 
-  listen server { hostname: "0.0.0.0", port: port, backlog: Nothing } $ pure unit
+  listen server { hostname: "0.0.0.0", port: port, backlog: Nothing } $ log ("Server running on port: " <> show port)
