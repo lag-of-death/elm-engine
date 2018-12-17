@@ -52,7 +52,6 @@ onKeyDown enemies items player keyCode =
 
                             else
                                 player.entity.x - player.v
-                        , class = "character--going-right"
                     }
                 , closeEnemies = closeEnemies
             }
@@ -67,7 +66,6 @@ onKeyDown enemies items player keyCode =
 
                             else
                                 player.entity.y + player.v
-                        , class = "character--going-up"
                     }
                 , closeEnemies = closeEnemies
             }
@@ -82,7 +80,6 @@ onKeyDown enemies items player keyCode =
 
                             else
                                 player.entity.y - player.v
-                        , class = "character--going-down"
                     }
                 , closeEnemies = closeEnemies
             }
@@ -97,7 +94,6 @@ onKeyDown enemies items player keyCode =
 
                             else
                                 player.entity.x + player.v
-                        , class = "character--going-left"
                     }
                 , closeEnemies = closeEnemies
             }
@@ -262,26 +258,44 @@ update msg model =
             in
             ( { model | enemies = e, player = p }, Cmd.none )
 
+        Fight ->
+            let
+                pe =
+                    player.entity
+
+                { entity } =
+                    toPlayer_ player
+
+                p =
+                    { player
+                        | exp =
+                            if List.any (\item -> isSthOnTheRight entity item.entity) enemies then
+                                player.exp + 1
+
+                            else
+                                player.exp
+                    }
+            in
+            ( { model | player = p }, Cmd.none )
+
         Walk keyCode ->
             ( { model | player = onKeyDown enemies items player keyCode }, Cmd.none )
 
         SetDirection dir ->
-            let
-                entity =
-                    player.entity
-
-                class_ =
-                    if not (String.contains "Arrow" dir) then
-                        entity.class ++ " " ++ "character--stopped"
-
-                    else
-                        entity.class
-            in
             ( { model
                 | player =
                     { player
                         | direction = dir
-                        , entity = { entity | class = class_ }
+                    }
+              }
+            , Cmd.none
+            )
+
+        SetAction action ->
+            ( { model
+                | player =
+                    { player
+                        | action = action
                     }
               }
             , Cmd.none

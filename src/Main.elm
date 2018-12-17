@@ -26,8 +26,7 @@ main =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ E.onKeyDown (Decode.map SetDirection keyDecoder)
-        , if not (List.isEmpty model.player.closeEnemies) then
+        [ if not (List.isEmpty model.player.closeEnemies) then
             Time.every 100 Tick
 
           else
@@ -35,6 +34,11 @@ subscriptions model =
         , Time.every 1000 Second
         , if String.contains "Arrow" model.player.direction then
             Time.every 50 (\_ -> Walk model.player.direction)
+
+          else
+            Sub.none
+        , if model.player.action == "Attack" then
+            Time.every 500 (\_ -> Fight)
 
           else
             Sub.none
@@ -65,7 +69,8 @@ init flags =
             []
 
         player =
-            { direction = "none"
+            { direction = "StopDown"
+            , action = ""
             , chase = { x = 0, y = 0 }
             , closeEnemies = closeEnemies
             , v = 1
@@ -80,6 +85,7 @@ init flags =
                 , id = 123
                 }
             , r = 50
+            , exp = 0
             }
     in
     ( { items =

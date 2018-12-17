@@ -147,6 +147,16 @@ body {
     }
 }
 
+@keyframes fight {
+    0% {
+        background: red;
+    }
+
+    100% {
+        background: gray;
+    }
+}
+
 .fire {
     position: absolute;
     animation: fire 2s steps(3) infinite;
@@ -185,4 +195,8 @@ body {
     position: absolute;
     border-radius: 360px;
     border: 1px solid forestgreen;
+}
+
+.character--fighting {
+    animation: fight 1s steps(2) infinite;
 }

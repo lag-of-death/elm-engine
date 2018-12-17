@@ -19,6 +19,12 @@ view model =
         player =
             model.player
 
+        pd =
+            player.direction
+
+        pa =
+            player.action
+
         entity =
             player.entity
 
@@ -67,11 +73,24 @@ view model =
                 <|
                     List.filter (\item -> not <| isPlayerAway { x = player.r - player.entity.x, y = player.r - player.entity.y } item.entity 160) (concatEntities model.enemies items)
             , Html.div
+                [ A.style "position" "absolute"
+                , A.style "left" "1px"
+                , A.style "top" "1px"
+                ]
+                [ Html.text <| "EXP: " ++ String.fromInt player.exp ]
+            , Html.div
                 [ A.style "top" <| intToPx player.r
                 , A.style "left" <| intToPx player.r
                 , A.style "width" <| intToPx player.entity.w
                 , A.style "height" <| intToPx player.entity.h
-                , A.class player.entity.class
+                , A.classList
+                    [ ( "character--fighting", pa == "Attack" )
+                    , ( "character--going-left", pd == "ArrowLeft" || pd == "StopLeft" )
+                    , ( "character--going-right", pd == "ArrowRight" || pd == "StopRight" )
+                    , ( "character--going-down", pd == "ArrowDown" || pd == "StopDown" )
+                    , ( "character--going-up", pd == "ArrowUp" || pd == "StopUp" )
+                    , ( "character--stopped", pd == "none" || pd == "StopLeft" || pd == "StopRight" || pd == "StopDown" || pd == "StopUp" )
+                    ]
                 , A.class "character"
                 ]
                 [ Html.div
@@ -95,28 +114,44 @@ view model =
             ]
             [ Html.button
                 [ E.on "touchstart" <| succeed (SetDirection "ArrowLeft")
-                , E.on "touchend" <| succeed (SetDirection "none")
+                , E.on "touchend" <| succeed (SetDirection "StopLeft")
+                , E.onMouseDown (SetDirection "ArrowLeft")
+                , E.onMouseUp (SetDirection "StopLeft")
                 , A.class "button"
                 ]
                 [ Html.span [] [ Html.text "<" ] ]
             , Html.button
                 [ E.on "touchstart" <| succeed (SetDirection "ArrowRight")
-                , E.on "touchend" <| succeed (SetDirection "none")
+                , E.on "touchend" <| succeed (SetDirection "StopRight")
+                , E.onMouseDown (SetDirection "ArrowRight")
+                , E.onMouseUp (SetDirection "StopRight")
                 , A.class "button"
                 ]
                 [ Html.span [] [ Html.text ">" ] ]
             , Html.button
                 [ E.on "touchstart" <| succeed (SetDirection "ArrowUp")
-                , E.on "touchend" <| succeed (SetDirection "none")
+                , E.on "touchend" <| succeed (SetDirection "StopUp")
+                , E.onMouseDown (SetDirection "ArrowUp")
+                , E.onMouseUp (SetDirection "StopUp")
                 , A.class "button"
                 ]
                 [ Html.span [] [ Html.text "^" ] ]
             , Html.button
                 [ E.on "touchstart" <| succeed (SetDirection "ArrowDown")
-                , E.on "touchend" <| succeed (SetDirection "none")
+                , E.on "touchend" <| succeed (SetDirection "StopDown")
+                , E.onMouseDown (SetDirection "ArrowDown")
+                , E.onMouseUp (SetDirection "StopDown")
                 , A.class "button"
                 ]
                 [ Html.span [] [ Html.text "v" ] ]
+            , Html.button
+                [ E.on "touchstart" <| succeed (SetAction "Attack")
+                , E.on "touchend" <| succeed (SetAction "StopAttack")
+                , E.onMouseDown (SetAction "Attack")
+                , E.onMouseUp (SetAction "StopAttack")
+                , A.class "button"
+                ]
+                [ Html.span [] [ Html.text "A" ] ]
             ]
         ]
     , title = ""

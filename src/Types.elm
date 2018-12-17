@@ -25,7 +25,7 @@ type alias Bound =
 
 
 type alias Player =
-    { direction : String, v : Int, r : Int, closeEnemies : List Enemy, entity : Entity, chase : { x : Int, y : Int } }
+    { exp : Int, action : String, direction : String, v : Int, r : Int, closeEnemies : List Enemy, entity : Entity, chase : { x : Int, y : Int } }
 
 
 type alias Item =
@@ -50,3 +50,5 @@ type Msg
     | NewRandomNumber Int
     | SetDirection String
     | Walk String
+    | Fight
+    | SetAction String
