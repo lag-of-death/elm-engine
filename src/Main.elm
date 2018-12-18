@@ -2,6 +2,8 @@ module Main exposing (main)
 
 import Browser
 import Browser.Events as E
+import Collisions exposing (isSthNear)
+import Helpers exposing (..)
 import Json.Decode as Decode
 import Time
 import Types exposing (..)
@@ -25,8 +27,20 @@ main =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
+    let
+        { entity } =
+            toPlayer model.player
+
+        nearEnemiesCount =
+            List.length <| List.filter (\item -> isSthNear entity item.entity) model.enemies
+    in
     Sub.batch
-        [ if not (List.isEmpty model.player.closeEnemies) then
+        [ if nearEnemiesCount > 0 then
+            Time.every 1000 (\_ -> EnemyFight nearEnemiesCount)
+
+          else
+            Sub.none
+        , if not (List.isEmpty model.player.closeEnemies) then
             Time.every 100 Tick
 
           else
@@ -53,16 +67,16 @@ init : {} -> ( Model, Cmd Msg )
 init flags =
     let
         enemies =
-            [ { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 6 }, id = 0, x = 0, y = 0, h = 6, w = 8, class = "enemy_1", collidable = True } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 1, collidable = True, x = -10, y = 40, h = 8, w = 8, class = "enemy_1" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 2, collidable = True, x = -20, y = 40, h = 8, w = 8, class = "enemy_2" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 3, collidable = True, x = -30, y = 40, h = 8, w = 8, class = "enemy_2" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 4, collidable = True, x = -40, y = 40, h = 8, w = 8, class = "enemy_2" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 5, collidable = True, x = -50, y = 40, h = 8, w = 8, class = "enemy_2" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 6, collidable = True, x = -60, y = 40, h = 8, w = 8, class = "enemy_2" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 7, collidable = True, x = -70, y = 40, h = 8, w = 8, class = "enemy_2" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 8, collidable = True, x = -80, y = 40, h = 8, w = 8, class = "enemy_2" } }
-            , { hp = 10, entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 9, collidable = True, x = -90, y = 40, h = 8, w = 8, class = "enemy_2" } }
+            [ { entity = { bounds = { x = 0, y = 0, w = 8, h = 6 }, id = 0, x = 0, y = 0, h = 8, w = 10, class = "enemy_1", collidable = True } }
+            , { entity = { bounds = { x = 0, y = 0, w = 4, h = 8 }, id = 1, collidable = True, x = -10, y = 40, h = 10, w = 6, class = "enemy_1" } }
+            , { entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 2, collidable = True, x = -20, y = 40, h = 10, w = 10, class = "enemy_2" } }
+            , { entity = { bounds = { x = 0, y = 0, w = 8, h = 4 }, id = 3, collidable = True, x = -30, y = 40, h = 6, w = 10, class = "enemy_2" } }
+            , { entity = { bounds = { x = 0, y = 0, w = 6, h = 8 }, id = 4, collidable = True, x = -40, y = 40, h = 10, w = 8, class = "enemy_2" } }
+            , { entity = { bounds = { x = 0, y = 0, w = 6, h = 8 }, id = 5, collidable = True, x = -50, y = 40, h = 10, w = 8, class = "enemy_1" } }
+            , { entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 6, collidable = True, x = -60, y = 40, h = 10, w = 10, class = "enemy_1" } }
+            , { entity = { bounds = { x = 0, y = 0, w = 8, h = 8 }, id = 7, collidable = True, x = -70, y = 40, h = 10, w = 10, class = "enemy_2" } }
+            , { entity = { bounds = { x = 0, y = 0, w = 8, h = 12 }, id = 8, collidable = True, x = -80, y = 40, h = 14, w = 10, class = "enemy_1" } }
+            , { entity = { bounds = { x = 0, y = 0, w = 12, h = 8 }, id = 9, collidable = True, x = -90, y = 60, h = 10, w = 14, class = "enemy_2" } }
             ]
 
         closeEnemies =
@@ -85,13 +99,14 @@ init flags =
                 , id = 123
                 }
             , r = 50
+            , hp = 100
             , exp = 0
             }
     in
     ( { items =
-            [ { description = "", entity = { bounds = { x = 0, y = 0, w = 10, h = 4 }, id = 1, x = 36, y = 60, h = 4, w = 10, class = "boulder", collidable = True } }
-            , { description = "", entity = { id = 2, collidable = False, x = 16, y = 40, h = 5, w = 11, class = "mud", bounds = { w = 11, h = 5, x = 0, y = 0 } } }
-            , { description = "", entity = { id = 5, collidable = True, x = 48, y = 40, h = 80, w = 80, class = "tree", bounds = { w = 13, h = 12, x = 28, y = 29 } } }
+            [ { entity = { bounds = { x = 0, y = 0, w = 8, h = 4 }, id = 1, x = 36, y = 60, h = 6, w = 10, class = "boulder", collidable = True } }
+            , { entity = { id = 2, collidable = False, x = 16, y = 40, h = 5, w = 11, class = "mud", bounds = { w = 0, h = 0, x = 0, y = 0 } } }
+            , { entity = { id = 5, collidable = True, x = 48, y = 40, h = 80, w = 80, class = "tree", bounds = { w = 13, h = 12, x = 28, y = 29 } } }
             ]
       , player = player
       , enemies = enemies

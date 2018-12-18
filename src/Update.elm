@@ -11,7 +11,7 @@ import Types exposing (..)
 onTick enemies items player =
     let
         player_ =
-            toPlayer_ player
+            toPlayer player
 
         closeItems_ =
             List.filter (\item -> not (isPlayerAway player_.entity item.entity 50)) items
@@ -36,7 +36,7 @@ onKeyDown enemies items player keyCode =
             player.entity
 
         { entity } =
-            toPlayer_ player
+            toPlayer player
 
         closeEnemies =
             List.filter (\enemy -> not (isPlayerAway entity enemy.entity 30)) enemies
@@ -197,17 +197,6 @@ getUpdatedEnemy player item closeItems oldEnemies newEnemies =
         []
 
 
-toPlayer_ player =
-    let
-        entity =
-            player.entity
-    in
-    { player
-        | entity =
-            { entity | x = player.r - entity.x, y = player.r - entity.y }
-    }
-
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     let
@@ -258,25 +247,34 @@ update msg model =
             in
             ( { model | enemies = e, player = p }, Cmd.none )
 
+        EnemyFight numOfEnemies ->
+            ( { model | player = { player | hp = player.hp - numOfEnemies } }, Cmd.none )
+
         Fight ->
             let
                 pe =
                     player.entity
 
                 { entity } =
-                    toPlayer_ player
+                    toPlayer player
+
+                ( nearEnemies, restOfEnemies ) =
+                    List.partition (\item -> isSthNear entity item.entity) enemies
+
+                nearEnemiesExceptFirst =
+                    List.drop 1 nearEnemies
 
                 p =
                     { player
                         | exp =
-                            if List.any (\item -> isSthOnTheRight entity item.entity) enemies then
+                            if not <| List.isEmpty nearEnemies then
                                 player.exp + 1
 
                             else
                                 player.exp
                     }
             in
-            ( { model | player = p }, Cmd.none )
+            ( { model | player = p, enemies = List.append nearEnemiesExceptFirst restOfEnemies }, Cmd.none )
 
         Walk keyCode ->
             ( { model | player = onKeyDown enemies items player keyCode }, Cmd.none )

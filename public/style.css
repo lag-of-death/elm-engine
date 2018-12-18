@@ -12,7 +12,6 @@
 }
 
 .mobile-keyboard::after {
-    content: 'mobile keyboard - touch events';
     width: 100%;
     text-align: center;
     margin-top: 8px;
@@ -148,12 +147,11 @@ body {
 }
 
 @keyframes fight {
-    0% {
-        background: red;
+    from {
+        background: url('assets/left_1.png');
     }
-
-    100% {
-        background: gray;
+    to {
+        background: url('assets/right_2.png');
     }
 }
 

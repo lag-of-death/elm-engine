@@ -20,6 +20,6 @@ main = do
   let portEnvAsMaybeInEffect = lookupEnv "PORT"
 
   port <- (\portEnvAsMaybe -> parseInt $ fromMaybe "5000" portEnvAsMaybe ) <$> portEnvAsMaybeInEffect
-  server <- createServer $ staticHandler { root: "./public", maxAge: 60, historyAPIFallback: true }
+  server <- createServer $ staticHandler { root: "./public", maxAge: 0, historyAPIFallback: true }
 
   listen server { hostname: "0.0.0.0", port: port, backlog: Nothing } $ log ("Server running on port: " <> show port)

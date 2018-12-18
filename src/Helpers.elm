@@ -1,6 +1,17 @@
-module Helpers exposing (concatEntities, defaultEnemy, isPlayerAway, toEntities)
+module Helpers exposing (concatEntities, defaultEnemy, isPlayerAway, toEntities, toPlayer)
 
 import Types exposing (..)
+
+
+toPlayer player =
+    let
+        entity =
+            player.entity
+    in
+    { player
+        | entity =
+            { entity | x = player.r - entity.x, y = player.r - entity.y }
+    }
 
 
 isPlayerAway player enemy r =
@@ -31,8 +42,7 @@ toEntities list =
 
 defaultEnemy : Enemy
 defaultEnemy =
-    { hp = 0
-    , entity =
+    { entity =
         { id = -1
         , x = -1
         , y = -1

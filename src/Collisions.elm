@@ -1,4 +1,4 @@
-module Collisions exposing (collidingFromAbove, collidingFromBeneath, collidingFromLeft, collidingFromRight, isSthAbove, isSthBeneath, isSthOnTheLeft, isSthOnTheRight, shouldEnemyMoveDown, shouldEnemyMoveLeft, shouldEnemyMoveRight, shouldEnemyMoveUp)
+module Collisions exposing (collidingFromAbove, collidingFromBeneath, collidingFromLeft, collidingFromRight, isSthAbove, isSthBeneath, isSthNear, isSthOnTheLeft, isSthOnTheRight, shouldEnemyMoveDown, shouldEnemyMoveLeft, shouldEnemyMoveRight, shouldEnemyMoveUp)
 
 import Helpers exposing (..)
 import Types exposing (..)
@@ -18,6 +18,13 @@ collidingFromRight player item =
 
 collidingFromLeft player item =
     (player.bounds.x + player.x + player.bounds.w) > (item.bounds.x + item.x)
+
+
+isSthNear player item =
+    isSthOnTheRight player item
+        || isSthAbove player item
+        || isSthBeneath player item
+        || isSthOnTheLeft player item
 
 
 isSthOnTheRight player item =
