@@ -124,46 +124,58 @@ view model =
         , Html.div
             [ A.class "mobile-keyboard"
             ]
-            [ Html.button
-                [ E.on "touchstart" <| succeed (SetDirection "ArrowLeft")
-                , E.on "touchend" <| succeed (SetDirection "StopLeft")
-                , E.onMouseDown (SetDirection "ArrowLeft")
-                , E.onMouseUp (SetDirection "StopLeft")
-                , A.class "button"
+            [ Html.div [ A.style "width" "40%" ]
+                [ Html.div []
+                    [ Html.button
+                        [ E.on "touchstart" <| succeed (SetDirection "ArrowLeft")
+                        , E.on "touchend" <| succeed (SetDirection "StopLeft")
+                        , E.onMouseDown (SetDirection "ArrowLeft")
+                        , E.onMouseUp (SetDirection "StopLeft")
+                        , A.class "button"
+                        ]
+                        [ Html.span [] [ Html.text "<" ] ]
+                    , Html.button
+                        [ E.on "touchstart" <| succeed (SetDirection "ArrowRight")
+                        , E.on "touchend" <| succeed (SetDirection "StopRight")
+                        , E.on "touchmove " <| succeed (SetDirection "ArrowRight")
+                        , E.onMouseDown (SetDirection "ArrowRight")
+                        , E.onMouseUp (SetDirection "StopRight")
+                        , A.class "button"
+                        ]
+                        [ Html.span [] [ Html.text ">" ] ]
+                    ]
+                , Html.div []
+                    [ Html.button
+                        [ E.on "touchstart" <| succeed (SetDirection "ArrowUp")
+                        , E.on "touchend" <| succeed (SetDirection "StopUp")
+                        , E.on "touchmove " <| succeed (SetDirection "ArrowUp")
+                        , E.onMouseDown (SetDirection "ArrowUp")
+                        , E.onMouseUp (SetDirection "StopUp")
+                        , A.class "button"
+                        ]
+                        [ Html.span [] [ Html.text "^" ] ]
+                    , Html.button
+                        [ E.on "touchstart" <| succeed (SetDirection "ArrowDown")
+                        , E.on "touchmove " <| succeed (SetDirection "ArrowDown")
+                        , E.on "touchend" <| succeed (SetDirection "StopDown")
+                        , E.onMouseDown (SetDirection "ArrowDown")
+                        , E.onMouseUp (SetDirection "StopDown")
+                        , A.class "button"
+                        ]
+                        [ Html.span [] [ Html.text "v" ] ]
+                    ]
                 ]
-                [ Html.span [] [ Html.text "<" ] ]
-            , Html.button
-                [ E.on "touchstart" <| succeed (SetDirection "ArrowRight")
-                , E.on "touchend" <| succeed (SetDirection "StopRight")
-                , E.onMouseDown (SetDirection "ArrowRight")
-                , E.onMouseUp (SetDirection "StopRight")
-                , A.class "button"
+            , Html.div [ A.style "width" "40%" ]
+                [ Html.button
+                    [ E.on "touchstart" <| succeed (SetAction "Attack")
+                    , E.on "touchend" <| succeed (SetAction "StopAttack")
+                    , E.onMouseDown (SetAction "Attack")
+                    , E.onMouseUp (SetAction "StopAttack")
+                    , A.class "button"
+                    , A.style "width" "100%"
+                    ]
+                    [ Html.text "A" ]
                 ]
-                [ Html.span [] [ Html.text ">" ] ]
-            , Html.button
-                [ E.on "touchstart" <| succeed (SetDirection "ArrowUp")
-                , E.on "touchend" <| succeed (SetDirection "StopUp")
-                , E.onMouseDown (SetDirection "ArrowUp")
-                , E.onMouseUp (SetDirection "StopUp")
-                , A.class "button"
-                ]
-                [ Html.span [] [ Html.text "^" ] ]
-            , Html.button
-                [ E.on "touchstart" <| succeed (SetDirection "ArrowDown")
-                , E.on "touchend" <| succeed (SetDirection "StopDown")
-                , E.onMouseDown (SetDirection "ArrowDown")
-                , E.onMouseUp (SetDirection "StopDown")
-                , A.class "button"
-                ]
-                [ Html.span [] [ Html.text "v" ] ]
-            , Html.button
-                [ E.on "touchstart" <| succeed (SetAction "Attack")
-                , E.on "touchend" <| succeed (SetAction "StopAttack")
-                , E.onMouseDown (SetAction "Attack")
-                , E.onMouseUp (SetAction "StopAttack")
-                , A.class "button"
-                ]
-                [ Html.span [] [ Html.text "A" ] ]
             ]
         ]
     , title = ""
