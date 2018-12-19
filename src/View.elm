@@ -61,6 +61,7 @@ view model =
                                 , A.style "left" <| intToPx item.entity.x
                                 , A.style "width" <| intToPx item.entity.w
                                 , A.style "height" <| intToPx item.entity.h
+                                , A.style "animation" <| List.foldr (++) "" <| List.intersperse "," item.entity.animations
                                 ]
                                 [ if item.entity.collidable then
                                     Html.div
@@ -89,14 +90,7 @@ view model =
                     , A.style "left" <| intToPx player.r
                     , A.style "width" <| intToPx player.entity.w
                     , A.style "height" <| intToPx player.entity.h
-                    , A.classList
-                        [ ( "character--fighting", pa == "Attack" )
-                        , ( "character--going-left", pd == "ArrowLeft" || pd == "StopLeft" )
-                        , ( "character--going-right", pd == "ArrowRight" || pd == "StopRight" )
-                        , ( "character--going-down", pd == "ArrowDown" || pd == "StopDown" )
-                        , ( "character--going-up", pd == "ArrowUp" || pd == "StopUp" )
-                        , ( "character--stopped", pd == "none" || pd == "StopLeft" || pd == "StopRight" || pd == "StopDown" || pd == "StopUp" )
-                        ]
+                    , A.style "animation" <| List.foldr (++) "" <| List.intersperse "," <| player.entity.animations
                     , A.class "character"
                     ]
                     [ Html.div
@@ -137,7 +131,6 @@ view model =
                     , Html.button
                         [ E.on "touchstart" <| succeed (SetDirection "ArrowRight")
                         , E.on "touchend" <| succeed (SetDirection "StopRight")
-                        , E.on "touchmove " <| succeed (SetDirection "ArrowRight")
                         , E.onMouseDown (SetDirection "ArrowRight")
                         , E.onMouseUp (SetDirection "StopRight")
                         , A.class "button"
@@ -148,7 +141,6 @@ view model =
                     [ Html.button
                         [ E.on "touchstart" <| succeed (SetDirection "ArrowUp")
                         , E.on "touchend" <| succeed (SetDirection "StopUp")
-                        , E.on "touchmove " <| succeed (SetDirection "ArrowUp")
                         , E.onMouseDown (SetDirection "ArrowUp")
                         , E.onMouseUp (SetDirection "StopUp")
                         , A.class "button"
@@ -156,7 +148,6 @@ view model =
                         [ Html.span [] [ Html.text "^" ] ]
                     , Html.button
                         [ E.on "touchstart" <| succeed (SetDirection "ArrowDown")
-                        , E.on "touchmove " <| succeed (SetDirection "ArrowDown")
                         , E.on "touchend" <| succeed (SetDirection "StopDown")
                         , E.onMouseDown (SetDirection "ArrowDown")
                         , E.onMouseUp (SetDirection "StopDown")

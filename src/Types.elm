@@ -17,6 +17,7 @@ type alias Entity =
     , collidable : Bool
     , id : Int
     , bounds : Bound
+    , animations : List String
     }
 
 
@@ -50,6 +51,6 @@ type Msg
     | NewRandomNumber Int
     | SetDirection String
     | Walk String
-    | Fight
+    | Fight String
     | SetAction String
-    | EnemyFight Int
+    | EnemyFight (List Int)

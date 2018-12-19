@@ -8,6 +8,53 @@ import Time exposing (..)
 import Types exposing (..)
 
 
+getAnimations dir action =
+    let
+        fightAnimation =
+            "fight 500ms steps(2) infinite"
+
+        walkAnimation =
+            case dir of
+                "ArrowRight" ->
+                    [ "right 600ms steps(2) infinite" ]
+
+                "ArrowLeft" ->
+                    [ "left 600ms steps(2) infinite" ]
+
+                "ArrowUp" ->
+                    [ "up 600ms steps(2) infinite" ]
+
+                "ArrowDown" ->
+                    [ "down 600ms steps(2) infinite" ]
+
+                "StopRight" ->
+                    [ "right 600ms steps(2) forwards" ]
+
+                "StopLeft" ->
+                    [ "left 600ms steps(2) forwards" ]
+
+                "StopUp" ->
+                    [ "up 600ms steps(2) forwards" ]
+
+                "StopDown" ->
+                    [ "down 600ms steps(2) forwards" ]
+
+                _ ->
+                    []
+
+        finalFightAnimation =
+            if action == "StopAttack" then
+                []
+
+            else if action == "Attack" then
+                [ fightAnimation ]
+
+            else
+                []
+    in
+    List.append walkAnimation finalFightAnimation
+
+
 onTick enemies items player =
     let
         player_ =
@@ -52,6 +99,7 @@ onKeyDown enemies items player keyCode =
 
                             else
                                 player.entity.x - player.v
+                        , animations = getAnimations player.direction player.action
                     }
                 , closeEnemies = closeEnemies
             }
@@ -66,6 +114,7 @@ onKeyDown enemies items player keyCode =
 
                             else
                                 player.entity.y + player.v
+                        , animations = getAnimations player.direction player.action
                     }
                 , closeEnemies = closeEnemies
             }
@@ -80,6 +129,7 @@ onKeyDown enemies items player keyCode =
 
                             else
                                 player.entity.y - player.v
+                        , animations = getAnimations player.direction player.action
                     }
                 , closeEnemies = closeEnemies
             }
@@ -94,6 +144,7 @@ onKeyDown enemies items player keyCode =
 
                             else
                                 player.entity.x + player.v
+                        , animations = getAnimations player.direction player.action
                     }
                 , closeEnemies = closeEnemies
             }
@@ -247,19 +298,41 @@ update msg model =
             in
             ( { model | enemies = e, player = p }, Cmd.none )
 
-        EnemyFight numOfEnemies ->
-            ( { model | player = { player | hp = player.hp - numOfEnemies } }, Cmd.none )
-
-        Fight ->
+        EnemyFight enemiesIds ->
             let
-                pe =
+                enemies_ =
+                    List.map
+                        (\enemy ->
+                            let
+                                enemyEntity =
+                                    enemy.entity
+                            in
+                            { enemy
+                                | entity =
+                                    { enemyEntity
+                                        | animations =
+                                            if List.member enemy.entity.id enemiesIds then
+                                                [ "enemy--fighting 1s steps(2) infinite", "enemy--alt-fighting 1s steps(2) infinite" ]
+
+                                            else
+                                                []
+                                    }
+                            }
+                        )
+                        enemies
+            in
+            ( { model | enemies = enemies_, player = { player | hp = player.hp - List.length enemiesIds } }, Cmd.none )
+
+        Fight action ->
+            let
+                playerEntity =
                     player.entity
 
                 { entity } =
                     toPlayer player
 
                 ( nearEnemies, restOfEnemies ) =
-                    List.partition (\item -> isSthNear entity item.entity) enemies
+                    List.partition (\item -> isSthNear entity item.entity && action == "Attack") enemies
 
                 nearEnemiesExceptFirst =
                     List.drop 1 nearEnemies
@@ -272,6 +345,10 @@ update msg model =
 
                             else
                                 player.exp
+                        , entity =
+                            { playerEntity
+                                | animations = getAnimations model.player.direction model.player.action
+                            }
                     }
             in
             ( { model | player = p, enemies = List.append nearEnemiesExceptFirst restOfEnemies }, Cmd.none )
